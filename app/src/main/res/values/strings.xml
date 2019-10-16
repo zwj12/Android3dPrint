@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Android3DPrint</string>
+    <string name="welding_parameter_index">Index</string>
+    <string name="welding_parameter_weld_speed">Weld Speed</string>
+    <string name="welding_parameter_mode">Mode</string>
+    <string name="welding_parameter_current">Current</string>
+    <string name="welding_parameter_voltage">Voltage</string>
+    <string name="welding_parameter_pre_flow">Pre Flow</string>
+    <string name="welding_parameter_post_flow">Post Flow</string>
+</resources>
