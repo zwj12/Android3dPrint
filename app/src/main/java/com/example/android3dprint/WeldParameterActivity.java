@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.android3dprint.robot.ArcData;
 import com.example.android3dprint.robot.WeldData;
+
+import java.text.DecimalFormat;
 
 public class WeldParameterActivity extends AppCompatActivity {
 
@@ -22,8 +25,22 @@ public class WeldParameterActivity extends AppCompatActivity {
 
         WeldData weldData=(WeldData) getIntent().getSerializableExtra(MainActivity.EXTRA_MESSAGE);
 
-        // Capture the layout's TextView and set the string as its text
-        TextView textView = findViewById(R.id.textViewIndex);
-        textView.setText(weldData.toString());
+//        DecimalFormat df = new DecimalFormat("0.0");
+        DecimalFormat df = new DecimalFormat();
+
+        EditText editText = (EditText) findViewById(R.id.editTextIndex);
+        editText.setText(Integer.toString(weldData.getIndex()));
+
+        editText = (EditText) findViewById(R.id.editTextWeldSpeed);
+        editText.setText(df.format(weldData.getWeldSpeed()));
+
+        editText = (EditText) findViewById(R.id.editTextMode);
+        editText.setText(Integer.toString(weldData.getMainArc().getMode()));
+
+        editText = (EditText) findViewById(R.id.editTextCurrent);
+        editText.setText(new DecimalFormat("0").format( weldData.getMainArc().getCurrent()));
+
+        editText = (EditText) findViewById(R.id.editTextVoltage);
+        editText.setText(df.format(weldData.getMainArc().getVoltage()));
     }
 }

@@ -3,6 +3,7 @@ package com.example.android3dprint.robot;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 public class SeamData implements Serializable {
@@ -188,9 +189,15 @@ public class SeamData implements Serializable {
     @Override
     public String toString() {
         Locale l = Locale.ENGLISH;
-        return String.format(l,"[%.1f,%.1f,%s,%.1f,%d,%.1f,%.1f,%.1f,%s,%.1f,%.1f,%s,%.1f,%.1f,%s,%.1f]"
-                , this.purgeTime, this.preflowTime, this.ignArc, this.ignMoveDelay, this.scrapeStart, this.heatSpeed, this.heatTime, this.heatDistance, this.heatArc
-                , this.coolTime, this.fillTime, this.fillArc, this.bbackTime, this.rbackTime, this.bbackArc, this.postflowTime);
+        DecimalFormat df = new DecimalFormat("#.#");
+//        return String.format(l,"[%.1f,%.1f,%s,%.1f,%d,%.1f,%.1f,%.1f,%s,%.1f,%.1f,%s,%.1f,%.1f,%s,%.1f]"
+//                , this.purgeTime, this.preflowTime, this.ignArc, this.ignMoveDelay, this.scrapeStart, this.heatSpeed, this.heatTime, this.heatDistance, this.heatArc
+//                , this.coolTime, this.fillTime, this.fillArc, this.bbackTime, this.rbackTime, this.bbackArc, this.postflowTime);
+        return String.format(l, "[%s,%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s]"
+                , df.format(this.purgeTime), df.format(this.preflowTime), this.ignArc, this.ignMoveDelay, this.scrapeStart,
+                df.format(this.heatSpeed), df.format(this.heatTime), df.format(this.heatDistance), this.heatArc,
+                df.format(this.coolTime), df.format(this.fillTime), this.fillArc,
+                df.format(this.bbackTime), df.format(this.rbackTime), this.bbackArc, df.format(this.postflowTime));
     }
 
     void parse(String strSeamData) {
@@ -218,11 +225,11 @@ public class SeamData implements Serializable {
 
         numStartIndex = numStopIndex + 1;
         numStopIndex = strSeamData.indexOf(",", numStartIndex);
-        this.scrapeStart =Integer.parseInt( strSeamData.substring(numStartIndex, numStopIndex));
+        this.scrapeStart = Integer.parseInt(strSeamData.substring(numStartIndex, numStopIndex));
 
         numStartIndex = numStopIndex + 1;
         numStopIndex = strSeamData.indexOf(",", numStartIndex);
-        this.heatSpeed =Float.parseFloat( strSeamData.substring(numStartIndex, numStopIndex));
+        this.heatSpeed = Float.parseFloat(strSeamData.substring(numStartIndex, numStopIndex));
 
         numStartIndex = numStopIndex + 1;
         numStopIndex = strSeamData.indexOf(",", numStartIndex);
@@ -252,11 +259,11 @@ public class SeamData implements Serializable {
 
         numStartIndex = numStopIndex + 1;
         numStopIndex = strSeamData.indexOf(",", numStartIndex);
-        this.bbackTime =Float.parseFloat( strSeamData.substring(numStartIndex, numStopIndex));
+        this.bbackTime = Float.parseFloat(strSeamData.substring(numStartIndex, numStopIndex));
 
         numStartIndex = numStopIndex + 1;
         numStopIndex = strSeamData.indexOf(",", numStartIndex);
-        this.rbackTime =Float.parseFloat( strSeamData.substring(numStartIndex, numStopIndex));
+        this.rbackTime = Float.parseFloat(strSeamData.substring(numStartIndex, numStopIndex));
 
         numStartIndex = numStopIndex + 1;
         numStopIndex = strSeamData.indexOf("]", numStartIndex);
@@ -265,6 +272,6 @@ public class SeamData implements Serializable {
 
         numStartIndex = numStopIndex + 1;
         numStopIndex = strSeamData.indexOf("]", numStartIndex);
-        this.postflowTime =Float.parseFloat( strSeamData.substring(numStartIndex, numStopIndex));
+        this.postflowTime = Float.parseFloat(strSeamData.substring(numStartIndex, numStopIndex));
     }
 }

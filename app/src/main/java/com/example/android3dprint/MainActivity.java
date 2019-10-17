@@ -22,17 +22,20 @@ public class MainActivity extends AppCompatActivity {
     public void sendMessage(View view) {
         // Do something in response to button
         Intent intent = new Intent(this, WeldParameterActivity.class);
-//        EditText editText = (EditText) findViewById(R.id.editText);
-//        String message = editText.getText().toString();
-        String message="Hello Michael";
-        ArcData arcData=new ArcData();
         WeldData weldData=new WeldData();
-
-        arcData.setCurrent(200);
-        weldData.setWeldSpeed(7.1);
+        EditText editText = (EditText) findViewById(R.id.editTextInput);
+        weldData.parse(editText.getText().toString());
         intent.putExtra(EXTRA_MESSAGE, weldData);
         startActivity(intent);
-
     }
+
+    public void checkMessage(View view){
+        EditText editText = (EditText) findViewById(R.id.editTextInput);
+        WeldData weldData=new WeldData();
+        weldData.parse(editText.getText().toString());
+        editText = (EditText) findViewById(R.id.editTextOutput);
+        editText.setText(weldData.toString());
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.example.android3dprint.robot;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 public class WeldData implements Serializable {
@@ -68,11 +69,20 @@ public class WeldData implements Serializable {
     @Override
     public String toString() {
         Locale l = Locale.ENGLISH;
-        return String.format(l,"[%.1f,%.1f,%s,%s]"
-                , this.weldSpeed, this.orgWeldSpeed, this.mainArc, this.orgArc);
+        DecimalFormat df = new DecimalFormat("#.#");
+//        return String.format(l,"[%.1f,%.1f,%s,%s]"
+//                , this.weldSpeed, this.orgWeldSpeed, this.mainArc, this.orgArc);
+        return String.format(l,"[%s,%s,%s,%s]"
+                ,df.format( this.weldSpeed), df.format(this.orgWeldSpeed), this.mainArc, this.orgArc);
+
     }
 
-    void parse(String strWeldData) {
+    /**
+     *
+     * @param strWeldData
+     * [3,0,[4,0,-5,0,0,230,0,0,0],[0,0,0,0,0,0,0,0,0]]
+     */
+    public void parse(String strWeldData) {
         int numStartIndex = 0;
         int numStopIndex = strWeldData.indexOf("[");
 

@@ -3,6 +3,7 @@ package com.example.android3dprint.robot;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 public class WeaveData implements Serializable {
@@ -174,9 +175,17 @@ public class WeaveData implements Serializable {
     @Override
     public String toString() {
         Locale l = Locale.ENGLISH;
-        return String.format(l, "[%d,%d,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f]"
-                , this.weaveShape, this.weaveType, this.weaveLength, this.weaveWidth, this.weaveHeight, this.dwellLeft, this.dwellCenter, this.dwellRight
-                , this.weaveDir, this.weaveTilt, this.weaveOri, this.weaveBias, this.orgWeaveWidth, this.orgWeaveHeight, this.orgWeaveBias);
+        DecimalFormat df = new DecimalFormat("#.#");
+//        return String.format(l, "[%d,%d,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f]"
+//                , this.weaveShape, this.weaveType, this.weaveLength, this.weaveWidth, this.weaveHeight, this.dwellLeft, this.dwellCenter, this.dwellRight
+//                , this.weaveDir, this.weaveTilt, this.weaveOri, this.weaveBias, this.orgWeaveWidth, this.orgWeaveHeight, this.orgWeaveBias);
+        return String.format(l, "[%d,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s]"
+                , this.weaveShape, this.weaveType, df.format(this.weaveLength),
+                df.format(this.weaveWidth), df.format(this.weaveHeight), df.format(this.dwellLeft),
+                df.format(this.dwellCenter), df.format(this.dwellRight),
+                df.format(this.weaveDir), df.format(this.weaveTilt), df.format(this.weaveOri),
+                df.format(this.weaveBias), df.format(this.orgWeaveWidth), df.format(this.orgWeaveHeight),
+                df.format(this.orgWeaveBias));
     }
 
     void parse(String strWeaveData) {

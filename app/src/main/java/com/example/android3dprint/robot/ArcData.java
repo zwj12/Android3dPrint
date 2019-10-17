@@ -3,6 +3,7 @@ package com.example.android3dprint.robot;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 public class ArcData implements Serializable {
@@ -96,8 +97,13 @@ public class ArcData implements Serializable {
     @Override
     public String toString() {
         Locale l = Locale.ENGLISH;
-        return String.format(l,"[%d,%d,%.1f,%.1f,%.1f,%.0f,%.1f,%.1f,%.1f]"
-                , this.sched, this.mode, this.voltage, this.wirefeed, this.control, this.current, this.voltage2, this.wirefeed2, this.control2);
+        DecimalFormat df = new DecimalFormat("#.#");
+//        return String.format(l,"[%d,%d,%.1f,%.1f,%.1f,%.0f,%.1f,%.1f,%.1f]"
+//                , this.sched, this.mode, this.voltage, this.wirefeed, this.control, this.current, this.voltage2, this.wirefeed2, this.control2);
+        return String.format(l,"[%d,%d,%s,%s,%s,%s,%s,%s,%s]"
+                , this.sched, this.mode,df.format( this.voltage),df.format(  this.wirefeed),
+                df.format(this.control), df.format( this.current), df.format( this.voltage2),
+                df.format( this.wirefeed2), df.format( this.control2));
     }
 
    void parse(String strArcData) {
