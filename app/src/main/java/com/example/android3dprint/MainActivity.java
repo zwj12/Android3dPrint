@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.android3dprint.robot.ArcData;
+import com.example.android3dprint.robot.WeldData;
+
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 
@@ -22,8 +25,14 @@ public class MainActivity extends AppCompatActivity {
 //        EditText editText = (EditText) findViewById(R.id.editText);
 //        String message = editText.getText().toString();
         String message="Hello Michael";
-        intent.putExtra(EXTRA_MESSAGE, message);
+        ArcData arcData=new ArcData();
+        WeldData weldData=new WeldData();
+
+        arcData.setCurrent(200);
+        weldData.setWeldSpeed(7.1);
+        intent.putExtra(EXTRA_MESSAGE, weldData);
         startActivity(intent);
+
     }
 
 }
