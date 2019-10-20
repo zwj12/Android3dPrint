@@ -4,38 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".SocketActivity">
 
-    <Button
-        android:id="@+id/buttonWeldingParameter"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:onClick="sendMessage"
-        android:text="Edit"
+        android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="[3,0,[4,0,-5,0,0,230,0,0,0],[0,0,0,0,0,0,0,0,0]]"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonWeldingParameter" />
-
-    <EditText
-        android:id="@+id/editTextOutput"
-        android:layout_width="0dp"
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
@@ -45,31 +30,44 @@
         android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextInput" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
-        android:id="@+id/buttonCheck"
+        android:id="@+id/buttonConnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:onClick="checkMessage"
-        android:text="Check"
+        android:onClick="connect"
+        android:text="Connect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextOutput" />
+        app:layout_constraintTop_toBottomOf="@+id/editText" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:onClick="socketTest"
-        android:text="SocketTest"
+        android:onClick="send"
+        android:text="Send"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonConnect" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="disconnect"
+        android:text="Disconnect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -106,4 +106,6 @@ public class WeldData implements Serializable {
         numStopIndex =numStopIndex +1;
         this.orgArc.parse(strWeldData.substring(numStartIndex, numStopIndex));
     }
+
+
 }

@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="@string/welding_parameter_index" />
 
             <EditText
@@ -49,6 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="@string/welding_parameter_weld_speed" />
 
             <EditText
@@ -71,6 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="@string/welding_parameter_mode" />
 
             <EditText
@@ -93,6 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="@string/welding_parameter_current" />
 
             <EditText
@@ -115,6 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="@string/welding_parameter_voltage" />
 
             <EditText
@@ -125,8 +130,311 @@
                 android:ems="10"
                 android:hint="@string/welding_parameter_voltage"
                 android:inputType="textPersonName" />
-
         </TableRow>
 
-</TableLayout>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewPreFlowTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/welding_parameter_pre_flow" />
+
+            <EditText
+                android:id="@+id/editTextPreFlowTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:ems="10"
+                android:hint="@string/welding_parameter_pre_flow"
+                android:inputType="textPersonName" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewPostFlowTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/welding_parameter_post_flow" />
+
+            <EditText
+                android:id="@+id/editTextPostFlowTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:ems="10"
+                android:hint="@string/welding_parameter_post_flow"
+                android:inputType="textPersonName" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewWeaveShape"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/welding_parameter_weave_shape" />
+
+            <EditText
+                android:id="@+id/editTextWeaveShape"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:ems="10"
+                android:hint="@string/welding_parameter_weave_shape"
+                android:inputType="textPersonName" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewWeaveLength"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/welding_parameter_weave_length" />
+
+            <EditText
+                android:id="@+id/editTextWeaveLength"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:ems="10"
+                android:hint="@string/welding_parameter_weave_length"
+                android:inputType="textPersonName" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewWeaveWidth"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/welding_parameter_weave_width" />
+
+            <EditText
+                android:id="@+id/editTextWeaveWidth"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:ems="10"
+                android:hint="@string/welding_parameter_weave_width"
+                android:inputType="textPersonName" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewWeaveHeight"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/welding_parameter_weave_height" />
+
+            <EditText
+                android:id="@+id/editTextWeaveHeight"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:ems="10"
+                android:hint="@string/welding_parameter_weave_height"
+                android:inputType="textPersonName" />
+        </TableRow>
+
+<!--        <TableRow-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textViewWeaveDwellLeft"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:text="@string/welding_parameter_dwell_left" />-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/editTextDwellLeft"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2"-->
+<!--                android:ems="10"-->
+<!--                android:hint="@string/welding_parameter_dwell_left"-->
+<!--                android:inputType="textPersonName" />-->
+<!--        </TableRow>-->
+
+<!--        <TableRow-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textViewDwellCenter"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:text="@string/welding_parameter_dwell_center" />-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/editTextDwellCenter"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2"-->
+<!--                android:ems="10"-->
+<!--                android:hint="@string/welding_parameter_dwell_center"-->
+<!--                android:inputType="textPersonName" />-->
+<!--        </TableRow>-->
+
+<!--        <TableRow-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textViewDwellRight"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:text="@string/welding_parameter_dwell_right" />-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/editTextDwellRight"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2"-->
+<!--                android:ems="10"-->
+<!--                android:hint="@string/welding_parameter_dwell_right"-->
+<!--                android:inputType="textPersonName" />-->
+<!--        </TableRow>-->
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <Button
+                android:id="@+id/buttonRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="refreshWeldParameter"
+                android:text="Refresh" />
+
+            <Button
+                android:id="@+id/buttonApply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Apply" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/buttonConnect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="connect"
+                android:text="Refresh" />
+
+            <Button
+                android:id="@+id/buttonClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:onClick="close"
+                android:text="Apply" />
+        </TableRow>
+
+<!--        <TableRow-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textViewWeaveDir"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:text="@string/welding_parameter_weave_dir" />-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/editTextWeaveDir"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2"-->
+<!--                android:ems="10"-->
+<!--                android:hint="@string/welding_parameter_weave_dir"-->
+<!--                android:inputType="textPersonName" />-->
+<!--        </TableRow>-->
+
+<!--        <TableRow-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textViewWeaveTilt"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:text="@string/welding_parameter_weave_tilt" />-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/editTextWeaveTilt"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2"-->
+<!--                android:ems="10"-->
+<!--                android:hint="@string/welding_parameter_weave_tilt"-->
+<!--                android:inputType="textPersonName" />-->
+<!--        </TableRow>-->
+
+<!--        <TableRow-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textViewWeaveOri"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:text="@string/welding_parameter_weave_ori" />-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/editTextWeaveOri"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2"-->
+<!--                android:ems="10"-->
+<!--                android:hint="@string/welding_parameter_weave_ori"-->
+<!--                android:inputType="textPersonName" />-->
+<!--        </TableRow>-->
+
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

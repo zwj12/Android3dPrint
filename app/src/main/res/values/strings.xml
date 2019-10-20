@@ -7,4 +7,14 @@
     <string name="welding_parameter_voltage">Voltage</string>
     <string name="welding_parameter_pre_flow">Pre Flow</string>
     <string name="welding_parameter_post_flow">Post Flow</string>
+    <string name="welding_parameter_weave_shape">Weave Shape</string>
+    <string name="welding_parameter_weave_length">Weave Length</string>
+    <string name="welding_parameter_weave_width">Weave Width</string>
+    <string name="welding_parameter_weave_height">Weave Height</string>
+    <string name="welding_parameter_dwell_left">Dwell Left</string>
+    <string name="welding_parameter_dwell_center">Dwell Center</string>
+    <string name="welding_parameter_dwell_right">Dwell Right</string>
+    <string name="welding_parameter_weave_dir">Weave Dir</string>
+    <string name="welding_parameter_weave_tilt">Weave Tilt</string>
+    <string name="welding_parameter_weave_ori">Weave Ori</string>
 </resources>

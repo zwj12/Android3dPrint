@@ -4,15 +4,44 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.android3dprint.robot.ArcData;
+import com.example.android3dprint.robot.SocketMessageType;
+import com.example.android3dprint.robot.SocketMessaging;
 import com.example.android3dprint.robot.WeldData;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 public class WeldParameterActivity extends AppCompatActivity {
+    private static final int PORT = 9999;
+    private PrintWriter printWriter;
+    private BufferedReader in;
+    private ExecutorService mExecutorService = null;
+    private String receiveMsg;
+
+
+    private SocketMessaging socketMessaging = new SocketMessaging();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +52,7 @@ public class WeldParameterActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
-        WeldData weldData=(WeldData) getIntent().getSerializableExtra(MainActivity.EXTRA_MESSAGE);
+        WeldData weldData = (WeldData) getIntent().getSerializableExtra(MainActivity.EXTRA_MESSAGE);
 
 //        DecimalFormat df = new DecimalFormat("0.0");
         DecimalFormat df = new DecimalFormat();
@@ -38,9 +67,53 @@ public class WeldParameterActivity extends AppCompatActivity {
         editText.setText(Integer.toString(weldData.getMainArc().getMode()));
 
         editText = (EditText) findViewById(R.id.editTextCurrent);
-        editText.setText(new DecimalFormat("0").format( weldData.getMainArc().getCurrent()));
+        editText.setText(new DecimalFormat("0").format(weldData.getMainArc().getCurrent()));
 
         editText = (EditText) findViewById(R.id.editTextVoltage);
         editText.setText(df.format(weldData.getMainArc().getVoltage()));
+
+        mExecutorService = Executors.newCachedThreadPool();
+    }
+
+    public void refreshWeldParameter(View view) throws Exception {
+//        Log.d("Michael", "RefreshWeldParameter Start");
+//        int robotStatus = socketMessaging.getRobotStatus();
+//        Log.d("Michael", Integer.toString((robotStatus)));
+        String sendMsg ="Hello Michael";
+//        mExecutorService.execute(new sendService(sendMsg));
+    }
+
+    public void connect(View view) {
+//        try {
+////            String strIPAddress = "172.0.0.1";
+////            int intPort = 3003;
+////            socketMessaging.connect(strIPAddress, intPort);
+////        } catch (Exception e) {
+////            // TODO Auto-generated catch block
+////            Log.d("Michael",e.getMessage());
+////            e.printStackTrace();
+////        }
+
+//        new Thread() {
+//            public void run() {
+//                try {
+//                    String strIPAddress = "172.0.0.1";
+//                    int intPort = 3003;
+//                    socketMessaging.connect(strIPAddress, intPort);
+//                    currentThread().sleep(5000);
+//                } catch (Exception e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//        }.start();
+
+//        mExecutorService.execute(new SocketConnectService());
+    }
+
+    public void close(View view) throws Exception {
+//        socketMessaging.close();
+
+//        mExecutorService.execute(new sendService("0"));
     }
 }

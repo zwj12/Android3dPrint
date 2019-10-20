@@ -37,5 +37,8 @@ public class MainActivity extends AppCompatActivity {
         editText.setText(weldData.toString());
     }
 
-
+    public void socketTest(View view){
+        Intent intent = new Intent(this, SocketActivity.class);
+        startActivity(intent);
+    }
 }
