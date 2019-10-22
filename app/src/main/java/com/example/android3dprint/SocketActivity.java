@@ -45,7 +45,7 @@ public class SocketActivity extends AppCompatActivity {
         mEditText = (EditText) findViewById(R.id.editText);
         mTextView = (TextView) findViewById(R.id.textView);
         Button mButton=(Button)findViewById(R.id.buttonConnect);
-        this.socketHandler=new SocketHandler(mTextView);
+        this.socketHandler=new SocketHandler();
         mExecutorService = Executors.newCachedThreadPool();
 
     }
@@ -56,15 +56,22 @@ public class SocketActivity extends AppCompatActivity {
     }
 
     public void send(View view) {
-        String sendMsg = mEditText.getText().toString();
-        Log.d(TAG,sendMsg);
-        mExecutorService.execute(new SocketSendService(sendMsg, printWriter));
+        Log.d(TAG,"Test Sending");
+        this.socketHandler.sendBytesLength=3;
+        this.socketHandler.sendBytes[0]=0;
+        this.socketHandler.sendBytes[1]=0;
+        this.socketHandler.sendBytes[2]=0;
+        mExecutorService.execute(new SocketSendService(this.socketHandler));
+
+//        String sendMsg = mEditText.getText().toString();
+//        Log.d(TAG,sendMsg);
+//        mExecutorService.execute(new SocketSendService(sendMsg, printWriter));
 
 //        mExecutorService.execute(new sendService(sendMsg));
     }
 
     public void disconnect(View view) {
-        mExecutorService.execute(new SocketSendService("0", printWriter));
+//        mExecutorService.execute(new SocketSendService("0", printWriter));
     }
 
 //    private class sendService implements Runnable {
