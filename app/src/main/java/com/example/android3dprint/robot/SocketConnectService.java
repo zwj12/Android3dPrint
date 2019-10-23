@@ -5,8 +5,12 @@ import android.util.Log;
 
 import com.example.android3dprint.SocketActivity;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,17 +38,17 @@ public class SocketConnectService implements Runnable {
     @Override
     public void run() {
         try {
-//            Log.e(TAG, ("SocketConnectService:" + "Connecting"));
             SocketAddress endpoint = new InetSocketAddress(HOST, PORT);
             socketHandler.socket.connect(endpoint, socketHandler.connectTimeOut);
             socketHandler.socket.setSoTimeout(socketHandler.soTimeOut);
             socketHandler.outputStream = socketHandler.socket.getOutputStream();
             socketHandler.printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
                     socketHandler.socket.getOutputStream(), "UTF-8")), true);
-
             socketHandler.inputStream = socketHandler.socket.getInputStream();
             socketHandler.bufferedReader = new BufferedReader(new InputStreamReader(
                     socketHandler.socket.getInputStream(), "UTF-8"));
+            socketHandler.dataInputStream=new DataInputStream(new BufferedInputStream( socketHandler.inputStream));
+            socketHandler.dataOutputStream=new DataOutputStream(new BufferedOutputStream( socketHandler.outputStream));
 
             if(socketHandler.backgroundReceiveMsg){
                 receiveMsg();
@@ -57,7 +61,6 @@ public class SocketConnectService implements Runnable {
                 msg.obj = e;
                 socketHandler.sendMessage(msg);
             }
-//            e.printStackTrace();
         }
     }
 
@@ -73,8 +76,6 @@ public class SocketConnectService implements Runnable {
                         msg.obj = socketHandler.receiveBytes;
                         socketHandler.sendMessage(msg);
                     } else {
-//                        socketHandler.bufferedReader.close();
-//                        socketHandler.inputStream.close();
                         socketHandler.socket.close();
                         Message msg = Message.obtain();
                         msg.what = -1;
@@ -89,8 +90,6 @@ public class SocketConnectService implements Runnable {
                         socketHandler.sendMessage(msg);
                     }else
                     {
-//                        socketHandler.bufferedReader.close();
-//                        socketHandler.inputStream.close();
                         socketHandler.socket.close();
                         Message msg = Message.obtain();
                         msg.what = -1;
@@ -101,7 +100,6 @@ public class SocketConnectService implements Runnable {
             }
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
-//            e.printStackTrace();
         }
     }
 }

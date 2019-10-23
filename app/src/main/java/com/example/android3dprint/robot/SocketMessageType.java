@@ -2,24 +2,20 @@ package com.example.android3dprint.robot;
 
 public enum SocketMessageType {
     GetRobotStatus (0),
+    CloseConnection (1),
+    GetOperatingMode (2),
+    GetRunMode (3),
 
-    GetOperatingMode (5),
-    GetRunMode (6),
-    GetSignalDo (7),
-    GetSignalAo (8),
-    GetSignalGo (9),
-    GetSignalDi (10),
-    GetSignalAi (11),
-    GetSignalGi (12),
+    GetSignalDo (8),
+    GetSignalAo (9),
+    GetSignalGo (10),
+    GetSignalDi (11),
+    GetSignalAi (12),
+    GetSignalGi (13),
 
-    Set3DModelName (32),
-    SetEngravingPoint (33),
-    SetEngraving3DModelNames (34),
-    SetEngravingPointEnd (35),
-
-    SetSignalDo (39),
-    SetSignalAo (40),
-    SetSignalGo (41)
+    SetSignalDo (16),
+    SetSignalAo (17),
+    SetSignalGo (18),
     ;
     private final int command;
 

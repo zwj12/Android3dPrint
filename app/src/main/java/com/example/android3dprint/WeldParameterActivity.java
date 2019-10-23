@@ -4,31 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.example.android3dprint.robot.ArcData;
-import com.example.android3dprint.robot.SocketMessageType;
-import com.example.android3dprint.robot.SocketMessaging;
 import com.example.android3dprint.robot.WeldData;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URL;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -39,9 +22,6 @@ public class WeldParameterActivity extends AppCompatActivity {
     private BufferedReader in;
     private ExecutorService mExecutorService = null;
     private String receiveMsg;
-
-
-    private SocketMessaging socketMessaging = new SocketMessaging();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.android3dprint.robot.SocketConnectService;
 import com.example.android3dprint.robot.SocketHandler;
+import com.example.android3dprint.robot.SocketMessageType;
 import com.example.android3dprint.robot.SocketSendService;
 
 import java.io.BufferedReader;
@@ -52,15 +53,12 @@ public class SocketActivity extends AppCompatActivity {
 
     public void connect(View view) {
 //        mExecutorService.execute(new connectService());  //在一个新的线程中请求 Socket 连接
+        this.socketHandler=new SocketHandler();
         mExecutorService.execute(new SocketConnectService(HOST,PORT,this.socketHandler));  //在一个新的线程中请求 Socket 连接
     }
 
     public void send(View view) {
-        Log.d(TAG,"Test Sending");
-        this.socketHandler.sendBytesLength=3;
-        this.socketHandler.sendBytes[0]=0;
-        this.socketHandler.sendBytes[1]=0;
-        this.socketHandler.sendBytes[2]=0;
+        this.socketHandler.socketMessageType= SocketMessageType.GetRobotStatus;
         mExecutorService.execute(new SocketSendService(this.socketHandler));
 
 //        String sendMsg = mEditText.getText().toString();
@@ -70,8 +68,14 @@ public class SocketActivity extends AppCompatActivity {
 //        mExecutorService.execute(new sendService(sendMsg));
     }
 
+    public void GetOperatingMode(View view) {
+        this.socketHandler.socketMessageType= SocketMessageType.GetOperatingMode;
+        mExecutorService.execute(new SocketSendService(this.socketHandler));
+    }
+
     public void disconnect(View view) {
-//        mExecutorService.execute(new SocketSendService("0", printWriter));
+        this.socketHandler.socketMessageType= SocketMessageType.CloseConnection;
+        mExecutorService.execute(new SocketSendService(this.socketHandler));
     }
 
 //    private class sendService implements Runnable {
