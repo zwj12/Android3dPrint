@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -41,24 +42,49 @@ public class SocketHandler extends Handler {
     public String receiveMsg;
 
     public SocketMessageType socketMessageType;
+    public String signalName;
+    public double signalValue;
+    public EditText editTextSignalValue;
 
     @Override
     public void handleMessage(Message msg) {
         Log.d(TAG, String.format("what=%d, arg1=%d",msg.what,msg.arg1));
-        switch (msg.what) {
-            case 0:
-                break;
-            case 1:
-                try
-                {
-                    this.socket.close();
-                    Log.d(TAG, "Socket is closed");
-                }
-                catch (IOException e)
-                {
-                    Log.d(TAG,"Socket close is not OK");
-                }
-                break;
+        if(msg.what==SocketMessageType.CloseConnection.getCommand()){
+            try
+            {
+                this.socket.close();
+                Log.d(TAG, "Socket is closed");
+            }
+            catch (IOException e)
+            {
+                Log.d(TAG,"Socket close is not OK");
+            }
+        }else if(msg.what==SocketMessageType.GetSignalDo.getCommand())
+        {
+            Log.d(TAG,msg.obj.toString() + ":" + msg.arg1);
+            editTextSignalValue.setText(Integer.toString( msg.arg1));
+        }else if(msg.what==SocketMessageType.GetSignalGo.getCommand())
+        {
+            Log.d(TAG,msg.obj.toString() + ":" + msg.arg1);
+            editTextSignalValue.setText(Integer.toString( msg.arg1));
+        }else if(msg.what==SocketMessageType.GetSignalAo.getCommand())
+        {
+            Log.d(TAG,msg.obj.toString());
+            editTextSignalValue.setText(msg.obj.toString());
+        }else if(msg.what==SocketMessageType.GetSignalDi.getCommand())
+        {
+            Log.d(TAG,msg.obj.toString() + ":" + msg.arg1);
+            editTextSignalValue.setText(Integer.toString( msg.arg1));
+        }else if(msg.what==SocketMessageType.GetSignalGi.getCommand())
+        {
+            Log.d(TAG,msg.obj.toString() + ":" + msg.arg1);
+            editTextSignalValue.setText(Integer.toString( msg.arg1));
+        }else if(msg.what==SocketMessageType.GetSignalAi.getCommand())
+        {
+            Log.d(TAG,msg.obj.toString());
+            editTextSignalValue.setText(msg.obj.toString());
         }
+
+
     }
 }

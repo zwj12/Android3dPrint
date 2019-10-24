@@ -1,10 +1,10 @@
 package com.example.android3dprint.robot;
 
 public enum SocketMessageType {
-    GetRobotStatus (0),
-    CloseConnection (1),
-    GetOperatingMode (2),
-    GetRunMode (3),
+    CloseConnection (0),
+    GetOperatingMode (1),
+    GetRunMode (2),
+    GetRobotStatus (7),
 
     GetSignalDo (8),
     GetSignalAo (9),

@@ -6,81 +6,263 @@
     android:layout_height="match_parent"
     tools:context=".SocketActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/button_GetSignalDo"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="GetSignalDo"
+        android:text="Get DO"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
+        android:id="@+id/editText_SignalDoName"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="sdoTest1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_GetSignalDo"
+        app:layout_constraintEnd_toStartOf="@+id/editText_SignalDoValue"
+        app:layout_constraintStart_toEndOf="@+id/button_GetSignalDo" />
+
+    <EditText
+        android:id="@+id/editText_SignalDoValue"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText_SignalDoName"
+        app:layout_constraintEnd_toStartOf="@+id/button_SetSignalDo" />
+
+    <Button
+        android:id="@+id/button_SetSignalDo"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:onClick="SetSignalDo"
+        android:text="SET DO"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText_SignalDoValue"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button_GetSignalGo"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="GetSignalGo"
+        android:text="Get Go"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/button_GetSignalDo" />
+
+    <EditText
+        android:id="@+id/editText_SignalGoName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="sgoTest1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_GetSignalGo"
+        app:layout_constraintEnd_toStartOf="@+id/editText_SignalGoValue"
+        app:layout_constraintStart_toEndOf="@+id/button_GetSignalGo" />
+
+    <EditText
+        android:id="@+id/editText_SignalGoValue"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText_SignalGoName"
+        app:layout_constraintEnd_toStartOf="@+id/button_SetSignalGo" />
+
+    <Button
+        android:id="@+id/button_SetSignalGo"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:onClick="SetSignalGo"
+        android:text="SET GO"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText_SignalGoValue"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button_GetSignalAo"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="GetSignalAo"
+        android:text="Get AO"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_GetSignalGo" />
+
+    <EditText
+        android:id="@+id/editText_SignalAoValue"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText_SignalAoName"
+        app:layout_constraintEnd_toStartOf="@+id/button_SetSignalAo" />
+
+    <EditText
+        android:id="@+id/editText_SignalAoName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="saoTest1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_GetSignalAo"
+        app:layout_constraintEnd_toStartOf="@+id/editText_SignalAoValue"
+        app:layout_constraintStart_toEndOf="@+id/button_GetSignalAo" />
+
+    <Button
+        android:id="@+id/button_SetSignalAo"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:onClick="SetSignalAo"
+        android:text="SET AO"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText_SignalAoValue"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button_GetSignalDi"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="GetSignalDi"
+        android:text="Get DI"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_GetSignalAo" />
+
+    <EditText
+        android:id="@+id/editText_SignalDiName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="sdiTest1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_GetSignalDi"
+        app:layout_constraintEnd_toStartOf="@+id/editText_SignalDiValue"
+        app:layout_constraintStart_toEndOf="@+id/button_GetSignalDi" />
+
+    <EditText
+        android:id="@+id/editText_SignalDiValue"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText_SignalDiName"
+        app:layout_constraintEnd_toEndOf="@+id/editText_SignalAoValue" />
+
+    <Button
+        android:id="@+id/button_GetSignalGi"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="GetSignalGi"
+        android:text="Get Gi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_GetSignalDi" />
+
+    <EditText
+        android:id="@+id/editText_SignalGiName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="sgiTest1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_GetSignalGi"
+        app:layout_constraintEnd_toStartOf="@+id/editText_SignalGiValue"
+        app:layout_constraintStart_toEndOf="@+id/button_GetSignalGi" />
+
+    <EditText
+        android:id="@+id/editText_SignalGiValue"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText_SignalGiName"
+        app:layout_constraintEnd_toEndOf="@+id/editText_SignalDiValue" />
+
+    <Button
+        android:id="@+id/button_GetSignalAi"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="GetSignalAi"
+        android:text="Get AI"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_GetSignalGi" />
+
+    <EditText
+        android:id="@+id/editText_SignalAiValue"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText_SignalAiName"
+        app:layout_constraintEnd_toEndOf="@+id/editText_SignalGiValue" />
+
+    <EditText
+        android:id="@+id/editText_SignalAiName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="saiTest1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_GetSignalAi"
+        app:layout_constraintEnd_toStartOf="@+id/editText_SignalAiValue"
+        app:layout_constraintStart_toEndOf="@+id/button_GetSignalAi" />
 
     <Button
         android:id="@+id/buttonConnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:onClick="connect"
         android:text="Connect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button_Disconnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:onClick="send"
-        android:text="Send"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonConnect" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:onClick="disconnect"
         android:text="Disconnect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:onClick="GetOperatingMode"
-        android:text="GetOperatingMode"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
 </androidx.constraintlayout.widget.ConstraintLayout>
