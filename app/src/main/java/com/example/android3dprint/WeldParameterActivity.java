@@ -20,7 +20,7 @@ public class WeldParameterActivity extends AppCompatActivity {
     private static final int PORT = 9999;
     private PrintWriter printWriter;
     private BufferedReader in;
-    private ExecutorService mExecutorService = null;
+//    private ExecutorService mExecutorService = null;
     private String receiveMsg;
 
     @Override
@@ -52,7 +52,7 @@ public class WeldParameterActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.editTextVoltage);
         editText.setText(df.format(weldData.getMainArc().getVoltage()));
 
-        mExecutorService = Executors.newCachedThreadPool();
+//        mExecutorService = Executors.newCachedThreadPool();
     }
 
     public void refreshWeldParameter(View view) throws Exception {

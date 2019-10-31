@@ -2,6 +2,8 @@ package com.example.android3dprint.robot;
 
 import androidx.annotation.NonNull;
 
+import com.example.android3dprint.R;
+
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Locale;

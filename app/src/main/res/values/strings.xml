@@ -17,4 +17,9 @@
     <string name="welding_parameter_weave_dir">Weave Dir</string>
     <string name="welding_parameter_weave_tilt">Weave Tilt</string>
     <string name="welding_parameter_weave_ori">Weave Ori</string>
+    <string name="title_activity_calculator">CalculatorActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
