@@ -52,13 +52,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void AsyncTask(View v)throws IOException {
         ByteArrayOutputStream requestBAOS = new ByteArrayOutputStream(1024);
-        DataOutputStream requestDOS = new DataOutputStream(requestBAOS);
-        requestDOS.writeByte(SocketMessageType.GetOperatingMode.getCommand());
-        int dataLength = 0;
-        requestDOS.writeShort(dataLength);
-
+        SocketMessageType socketMessageType=SocketMessageType.GetOperatingMode;
+        socketMessageType.packRequestRawBytes(requestBAOS);
         SocketAsyncTask socketAsyncTask=new SocketAsyncTask(HOST,PORT,this);
-        socketAsyncTask.execute(requestBAOS.toByteArray());
+        socketAsyncTask.execute(requestBAOS);
     }
 
 }

@@ -49,7 +49,7 @@ public class SocketHandler extends Handler {
     @Override
     public void handleMessage(Message msg) {
         Log.d(TAG, String.format("what=%d, arg1=%d",msg.what,msg.arg1));
-        if(msg.what==SocketMessageType.CloseConnection.getCommand()){
+        if(msg.what==SocketMessageType.CloseConnection.getRequestCommand()){
             try
             {
                 this.socket.close();
@@ -59,27 +59,27 @@ public class SocketHandler extends Handler {
             {
                 Log.d(TAG,"Socket close is not OK");
             }
-        }else if(msg.what==SocketMessageType.GetSignalDo.getCommand())
+        }else if(msg.what==SocketMessageType.GetSignalDo.getRequestCommand())
         {
             Log.d(TAG,msg.obj.toString() + ":" + msg.arg1);
             editTextSignalValue.setText(Integer.toString( msg.arg1));
-        }else if(msg.what==SocketMessageType.GetSignalGo.getCommand())
+        }else if(msg.what==SocketMessageType.GetSignalGo.getRequestCommand())
         {
             Log.d(TAG,msg.obj.toString() + ":" + msg.arg1);
             editTextSignalValue.setText(Integer.toString( msg.arg1));
-        }else if(msg.what==SocketMessageType.GetSignalAo.getCommand())
+        }else if(msg.what==SocketMessageType.GetSignalAo.getRequestCommand())
         {
             Log.d(TAG,msg.obj.toString());
             editTextSignalValue.setText(msg.obj.toString());
-        }else if(msg.what==SocketMessageType.GetSignalDi.getCommand())
+        }else if(msg.what==SocketMessageType.GetSignalDi.getRequestCommand())
         {
             Log.d(TAG,msg.obj.toString() + ":" + msg.arg1);
             editTextSignalValue.setText(Integer.toString( msg.arg1));
-        }else if(msg.what==SocketMessageType.GetSignalGi.getCommand())
+        }else if(msg.what==SocketMessageType.GetSignalGi.getRequestCommand())
         {
             Log.d(TAG,msg.obj.toString() + ":" + msg.arg1);
             editTextSignalValue.setText(Integer.toString( msg.arg1));
-        }else if(msg.what==SocketMessageType.GetSignalAi.getCommand())
+        }else if(msg.what==SocketMessageType.GetSignalAi.getRequestCommand())
         {
             Log.d(TAG,msg.obj.toString());
             editTextSignalValue.setText(msg.obj.toString());

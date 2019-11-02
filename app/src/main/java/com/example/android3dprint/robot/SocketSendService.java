@@ -20,7 +20,7 @@ public class SocketSendService implements Runnable {
         try {
             if (this.socketHandler.isRawData) {
                 Message msg = Message.obtain();
-                msg.what = socketHandler.socketMessageType.getCommand();
+                msg.what = socketHandler.socketMessageType.getRequestCommand();
                 switch (socketHandler.socketMessageType) {
                     case GetRobotStatus:
                         msg.arg1 = this.GetRobotStatus();
@@ -74,14 +74,14 @@ public class SocketSendService implements Runnable {
     }
 
     private synchronized  int GetRobotStatus() throws Exception {
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetRobotStatus.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetRobotStatus.getRequestCommand());
         socketHandler.dataOutputStream.writeShort(0);
         socketHandler.dataOutputStream.flush();
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         short dataLength = socketHandler.dataInputStream.readShort();
         int robotStatus = socketHandler.dataInputStream.readInt();
-        if ((responseCommand == SocketMessageType.GetRobotStatus.getCommand() + 128) && dataLength == 4) {
+        if ((responseCommand == SocketMessageType.GetRobotStatus.getRequestCommand() + 128) && dataLength == 4) {
             return robotStatus;
         } else {
             throw new Exception(String.format("Wrong Protocol : %d,%d,%d", responseCommand, dataLength, robotStatus));
@@ -89,13 +89,13 @@ public class SocketSendService implements Runnable {
     }
 
     private synchronized void CloseConnection() throws Exception {
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.CloseConnection.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.CloseConnection.getRequestCommand());
         socketHandler.dataOutputStream.writeShort(0);
         socketHandler.dataOutputStream.flush();
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         short dataLength = socketHandler.dataInputStream.readShort();
-        if ((responseCommand == SocketMessageType.CloseConnection.getCommand() + 128) && dataLength == 0) {
+        if ((responseCommand == SocketMessageType.CloseConnection.getRequestCommand() + 128) && dataLength == 0) {
             return;
         } else {
             throw new Exception(String.format("Wrong Protocol : %d,%d", responseCommand, dataLength));
@@ -103,13 +103,13 @@ public class SocketSendService implements Runnable {
     }
 
     private synchronized  int GetOperatingMode() throws Exception {
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetOperatingMode.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetOperatingMode.getRequestCommand());
         socketHandler.dataOutputStream.writeShort(0);
         socketHandler.dataOutputStream.flush();
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         short dataLength = socketHandler.dataInputStream.readShort();
-         if ((responseCommand == SocketMessageType.GetOperatingMode.getCommand() + 128) && dataLength == 4) {
+         if ((responseCommand == SocketMessageType.GetOperatingMode.getRequestCommand() + 128) && dataLength == 4) {
             int operatingMode = socketHandler.dataInputStream.readInt();
             return operatingMode;
         } else {
@@ -119,13 +119,13 @@ public class SocketSendService implements Runnable {
 
     private synchronized  int GetRunMode () throws Exception
     {
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetRunMode.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetRunMode.getRequestCommand());
         socketHandler.dataOutputStream.writeShort(0);
         socketHandler.dataOutputStream.flush();
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         short dataLength = socketHandler.dataInputStream.readShort();
-        if ((responseCommand == SocketMessageType.GetRunMode.getCommand() + 128) && dataLength == 4) {
+        if ((responseCommand == SocketMessageType.GetRunMode.getRequestCommand() + 128) && dataLength == 4) {
             int operatingMode = socketHandler.dataInputStream.readInt();
             return operatingMode;
         } else {
@@ -136,7 +136,7 @@ public class SocketSendService implements Runnable {
     private synchronized  int GetSignalDo (String signalName) throws Exception
     {
         Log.d(TAG,"GetSignalDo :" + signalName);
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalDo.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalDo.getRequestCommand());
         short dataLength = (short)signalName.length();
         socketHandler.dataOutputStream.writeShort( dataLength);
         socketHandler.dataOutputStream.writeBytes(signalName);
@@ -144,7 +144,7 @@ public class SocketSendService implements Runnable {
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         dataLength = socketHandler.dataInputStream.readShort();
-        if ((responseCommand == SocketMessageType.GetSignalDo.getCommand() + 128) && dataLength == 1) {
+        if ((responseCommand == SocketMessageType.GetSignalDo.getRequestCommand() + 128) && dataLength == 1) {
             int signalDoValue = socketHandler.dataInputStream.readByte();
             return signalDoValue;
         } else {
@@ -154,7 +154,7 @@ public class SocketSendService implements Runnable {
 
     private synchronized  int GetSignalGo (String signalName) throws Exception
     {
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalGo.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalGo.getRequestCommand());
         short dataLength = (short)signalName.length();
         socketHandler.dataOutputStream.writeShort( dataLength);
         socketHandler.dataOutputStream.writeBytes(signalName);
@@ -163,7 +163,7 @@ public class SocketSendService implements Runnable {
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         dataLength = socketHandler.dataInputStream.readShort();
         Log.d(TAG, String.format("GetSignalGo:%s, responseCommand:%d, dataLength:%d", signalName,responseCommand,dataLength));
-        if ((responseCommand == SocketMessageType.GetSignalGo.getCommand() + 128) && dataLength == 4) {
+        if ((responseCommand == SocketMessageType.GetSignalGo.getRequestCommand() + 128) && dataLength == 4) {
             int signalValue =socketHandler.dataInputStream.readInt();
             return signalValue;
         } else {
@@ -174,7 +174,7 @@ public class SocketSendService implements Runnable {
     private synchronized  float GetSignalAo (String signalName) throws Exception
     {
         Log.d(TAG,"GetSignalAo :" + signalName);
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalAo.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalAo.getRequestCommand());
         short dataLength = (short)signalName.length();
         socketHandler.dataOutputStream.writeShort( dataLength);
         socketHandler.dataOutputStream.writeBytes(signalName);
@@ -182,7 +182,7 @@ public class SocketSendService implements Runnable {
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         dataLength = socketHandler.dataInputStream.readShort();
-        if ((responseCommand == SocketMessageType.GetSignalAo.getCommand() + 128) && dataLength == 4) {
+        if ((responseCommand == SocketMessageType.GetSignalAo.getRequestCommand() + 128) && dataLength == 4) {
             float signalValue =socketHandler.dataInputStream.readFloat();
             return signalValue;
         } else {
@@ -193,7 +193,7 @@ public class SocketSendService implements Runnable {
 
     private synchronized void SetSignalDo (String signalName) throws Exception
     {
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.SetSignalDo.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.SetSignalDo.getRequestCommand());
         short dataLength = (short)(signalName.length()+1);
         socketHandler.dataOutputStream.writeShort( dataLength);
         socketHandler.dataOutputStream.writeByte((int)Math.round(socketHandler.signalValue));
@@ -202,7 +202,7 @@ public class SocketSendService implements Runnable {
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         dataLength = socketHandler.dataInputStream.readShort();
-        if ((responseCommand == SocketMessageType.SetSignalDo.getCommand() + 128) && dataLength == 0) {
+        if ((responseCommand == SocketMessageType.SetSignalDo.getRequestCommand() + 128) && dataLength == 0) {
             return ;
         } else {
             throw new Exception(String.format("Wrong Protocol : %d,%d", responseCommand, dataLength));
@@ -212,7 +212,7 @@ public class SocketSendService implements Runnable {
     private synchronized void SetSignalGo (String signalName) throws Exception
     {
         Log.d(TAG,"SetSignalGo:" +signalName);
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.SetSignalGo.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.SetSignalGo.getRequestCommand());
         short dataLength = (short)(signalName.length()+4);
         socketHandler.dataOutputStream.writeShort( dataLength);
         socketHandler.dataOutputStream.writeInt((int)Math.round(Math.abs(socketHandler.signalValue)));
@@ -221,7 +221,7 @@ public class SocketSendService implements Runnable {
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         dataLength = socketHandler.dataInputStream.readShort();
-        if ((responseCommand == SocketMessageType.SetSignalGo.getCommand() + 128) && dataLength == 0) {
+        if ((responseCommand == SocketMessageType.SetSignalGo.getRequestCommand() + 128) && dataLength == 0) {
             return ;
         } else {
             throw new Exception(String.format("Wrong Protocol : %d,%d", responseCommand, dataLength));
@@ -231,7 +231,7 @@ public class SocketSendService implements Runnable {
     private synchronized void SetSignalAo (String signalName) throws Exception
     {
         Log.d(TAG,"SetSignalAo:" +signalName);
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.SetSignalAo.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.SetSignalAo.getRequestCommand());
         short dataLength = (short)(signalName.length()+4);
         socketHandler.dataOutputStream.writeShort( dataLength);
         float signalValue=(float) socketHandler.signalValue;
@@ -241,7 +241,7 @@ public class SocketSendService implements Runnable {
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         dataLength = socketHandler.dataInputStream.readShort();
-        if ((responseCommand == SocketMessageType.SetSignalAo.getCommand() + 128) && dataLength == 0) {
+        if ((responseCommand == SocketMessageType.SetSignalAo.getRequestCommand() + 128) && dataLength == 0) {
             return ;
         } else {
             throw new Exception(String.format("Wrong Protocol : %d,%d", responseCommand, dataLength));
@@ -251,7 +251,7 @@ public class SocketSendService implements Runnable {
 
     private synchronized  int GetSignalDi (String signalName) throws Exception
     {
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalDi.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalDi.getRequestCommand());
         short dataLength = (short)signalName.length();
         socketHandler.dataOutputStream.writeShort( dataLength);
         socketHandler.dataOutputStream.writeBytes(signalName);
@@ -259,7 +259,7 @@ public class SocketSendService implements Runnable {
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         dataLength = socketHandler.dataInputStream.readShort();
-        if ((responseCommand == SocketMessageType.GetSignalDi.getCommand() + 128) && dataLength == 1) {
+        if ((responseCommand == SocketMessageType.GetSignalDi.getRequestCommand() + 128) && dataLength == 1) {
             int signalDoValue = socketHandler.dataInputStream.readByte();
             return signalDoValue;
         } else {
@@ -269,7 +269,7 @@ public class SocketSendService implements Runnable {
 
     private synchronized  int GetSignalGi (String signalName) throws Exception
     {
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalGi.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalGi.getRequestCommand());
         short dataLength = (short)signalName.length();
         socketHandler.dataOutputStream.writeShort( dataLength);
         socketHandler.dataOutputStream.writeBytes(signalName);
@@ -277,7 +277,7 @@ public class SocketSendService implements Runnable {
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         dataLength = socketHandler.dataInputStream.readShort();
-        if ((responseCommand == SocketMessageType.GetSignalGi.getCommand() + 128) && dataLength == 4) {
+        if ((responseCommand == SocketMessageType.GetSignalGi.getRequestCommand() + 128) && dataLength == 4) {
             int signalValue =socketHandler.dataInputStream.readInt();
             return signalValue;
         } else {
@@ -288,7 +288,7 @@ public class SocketSendService implements Runnable {
     private synchronized  float GetSignalAi (String signalName) throws Exception
     {
         Log.d(TAG,"GetSignalAi :" + signalName);
-        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalAi.getCommand());
+        socketHandler.dataOutputStream.writeByte(SocketMessageType.GetSignalAi.getRequestCommand());
         short dataLength = (short)signalName.length();
         socketHandler.dataOutputStream.writeShort( dataLength);
         socketHandler.dataOutputStream.writeBytes(signalName);
@@ -296,7 +296,7 @@ public class SocketSendService implements Runnable {
 
         int responseCommand = socketHandler.dataInputStream.readByte() & 0xFF;
         dataLength = socketHandler.dataInputStream.readShort();
-        if ((responseCommand == SocketMessageType.GetSignalAi.getCommand() + 128) && dataLength == 4) {
+        if ((responseCommand == SocketMessageType.GetSignalAi.getRequestCommand() + 128) && dataLength == 4) {
             float signalValue =socketHandler.dataInputStream.readFloat();
             return signalValue;
         } else {

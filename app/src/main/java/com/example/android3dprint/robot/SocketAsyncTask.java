@@ -8,23 +8,18 @@ import com.example.android3dprint.MainActivity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-public class SocketAsyncTask extends AsyncTask<byte[], Integer, byte[]> {
+public class SocketAsyncTask extends AsyncTask<ByteArrayOutputStream, Integer, ByteArrayOutputStream> {
     private static final String TAG = "SocketAsyncTask";
     private static final int connectTimeOut = 10000;
     private static final int soTimeOut = 0;
@@ -52,19 +47,14 @@ public class SocketAsyncTask extends AsyncTask<byte[], Integer, byte[]> {
     }
 
     @Override
-    protected byte[] doInBackground(byte[]... sendBytes) {
-        ByteArrayInputStream requestBAIS = new ByteArrayInputStream(sendBytes[0]);
-        DataInputStream requestDIS = new DataInputStream(requestBAIS);
+    protected ByteArrayOutputStream doInBackground(ByteArrayOutputStream... requestRawDatas) {
         ByteArrayOutputStream requestBAOS = new ByteArrayOutputStream(1024);
         DataOutputStream requestDOS = new DataOutputStream(requestBAOS);
         byte[] receiveBytes = new byte[1024];
 
         try {
             connectToRobot();
-
-            requestDIS.skipBytes(1);
-            int requestDataLength = requestDIS.readShort();
-            dataOutputStream.write(sendBytes[0], 0, requestDataLength + 3);
+            dataOutputStream.write(requestRawDatas[0].toByteArray());
             dataOutputStream.flush();
 
             requestDOS.writeByte(dataInputStream.readByte());
@@ -76,7 +66,7 @@ public class SocketAsyncTask extends AsyncTask<byte[], Integer, byte[]> {
             Log.d(TAG, e.getMessage());
         }
         Log.d(TAG, String.format("doInBackground in SocketAsyncTask thread"));
-        return requestBAOS.toByteArray();
+        return requestBAOS;
     }
 
     @Override
@@ -86,12 +76,17 @@ public class SocketAsyncTask extends AsyncTask<byte[], Integer, byte[]> {
     }
 
     @Override
-    protected void onPostExecute(byte[] receiveBytes) {
-        super.onPostExecute(receiveBytes);
+    protected void onPostExecute(ByteArrayOutputStream responseRawDatas) {
+        super.onPostExecute(responseRawDatas);
         SocketMessageType socketMessageType = SocketMessageType.GetOperatingMode;
         try {
-            int intOperatingMode = socketMessageType.GetOperatingMode(receiveBytes);
-            Log.d(TAG, String.format("onPostExecute in UI thread, %d", intOperatingMode));
+            if( socketMessageType.unpackResponseRawBytes(responseRawDatas.toByteArray())==0){
+                int intOperatingMode=(int)socketMessageType.responseValue;
+                Log.d(TAG, String.format("onPostExecute in UI thread, %d", intOperatingMode));
+            }else
+            {
+                Log.d(TAG, String.format("onPostExecute in UI thread, failed" ));
+            }
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
         }
