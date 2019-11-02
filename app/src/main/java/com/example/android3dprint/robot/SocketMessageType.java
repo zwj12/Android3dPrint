@@ -1,5 +1,7 @@
 package com.example.android3dprint.robot;
 
+import android.util.Log;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -27,6 +29,8 @@ public enum SocketMessageType {
     SetSymbolData(25, -1, 153, -1),
 
     Error(-1, 0, 255, 0);
+
+    private static final String TAG = "SocketMessageType";
 
     private final int requestCommand;
     private final int responseCommand;
@@ -148,6 +152,8 @@ public enum SocketMessageType {
         requestDOS.writeShort(this.requestDataLength);
     }
 
+    //The length of rawBytes maybe greater than the valid byte data
+    //which means that the responseDataLength+3 may be less than the length of the rawBytes
     public int unpackResponseRawBytes(byte[] rawBytes) throws IOException {
         ByteArrayInputStream requestBAIS = new ByteArrayInputStream(rawBytes);
         return this.unpackResponseRawBytes(requestBAIS);
@@ -193,8 +199,8 @@ public enum SocketMessageType {
                     requestDIS.skipBytes(responseDataLength);
                     return -1;
                 } else {
-                    responseValue = requestDIS.readByte();
-                    signalValue = (double) responseValue;
+                    signalValue = requestDIS.readByte();
+                    responseValue = signalValue;
                 }
                 break;
             case GetSignalGo:
@@ -203,8 +209,8 @@ public enum SocketMessageType {
                     requestDIS.skipBytes(responseDataLength);
                     return -1;
                 } else {
-                    responseValue = requestDIS.readInt();
-                    signalValue = (double) responseValue;
+                    signalValue = requestDIS.readInt();
+                    responseValue = signalValue;
                 }
                 break;
             case GetSignalAo:
@@ -213,8 +219,8 @@ public enum SocketMessageType {
                     requestDIS.skipBytes(responseDataLength);
                     return -1;
                 } else {
-                    responseValue = requestDIS.readFloat();
-                    signalValue = (double) responseValue;
+                    signalValue = requestDIS.readFloat();
+                    responseValue = signalValue;
                 }
                 break;
             case GetSymbolData:

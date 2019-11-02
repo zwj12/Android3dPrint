@@ -51,11 +51,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void AsyncTask(View v)throws IOException {
-        ByteArrayOutputStream requestBAOS = new ByteArrayOutputStream(1024);
-        SocketMessageType socketMessageType=SocketMessageType.GetOperatingMode;
-        socketMessageType.packRequestRawBytes(requestBAOS);
+        SocketMessageType[] socketMessageTypes=new SocketMessageType[6];
+        socketMessageTypes[0]=SocketMessageType.GetOperatingMode;
+        socketMessageTypes[1]=SocketMessageType.GetRunMode;
+        socketMessageTypes[2]=SocketMessageType.GetRobotStatus;
+        socketMessageTypes[3]=SocketMessageType.GetSignalDo;
+        socketMessageTypes[3].setSignalName("sdoTest1");
+        socketMessageTypes[4]=SocketMessageType.GetSignalGo;
+        socketMessageTypes[4].setSignalName("sgoTest1");
+        socketMessageTypes[socketMessageTypes.length-1]=SocketMessageType.CloseConnection;
         SocketAsyncTask socketAsyncTask=new SocketAsyncTask(HOST,PORT,this);
-        socketAsyncTask.execute(requestBAOS);
+        socketAsyncTask.execute(socketMessageTypes);
     }
 
 }

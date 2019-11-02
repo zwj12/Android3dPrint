@@ -19,7 +19,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-public class SocketAsyncTask extends AsyncTask<ByteArrayOutputStream, Integer, ByteArrayOutputStream> {
+public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, SocketMessageType[]> {
     private static final String TAG = "SocketAsyncTask";
     private static final int connectTimeOut = 10000;
     private static final int soTimeOut = 0;
@@ -47,48 +47,37 @@ public class SocketAsyncTask extends AsyncTask<ByteArrayOutputStream, Integer, B
     }
 
     @Override
-    protected ByteArrayOutputStream doInBackground(ByteArrayOutputStream... requestRawDatas) {
-        ByteArrayOutputStream requestBAOS = new ByteArrayOutputStream(1024);
-        DataOutputStream requestDOS = new DataOutputStream(requestBAOS);
-        byte[] receiveBytes = new byte[1024];
+    protected SocketMessageType[] doInBackground(SocketMessageType... socketMessageTypes) {
 
         try {
             connectToRobot();
-            dataOutputStream.write(requestRawDatas[0].toByteArray());
-            dataOutputStream.flush();
-
-            requestDOS.writeByte(dataInputStream.readByte());
-            int dataLength = dataInputStream.readShort();
-            requestDOS.writeShort(dataLength);
-            dataInputStream.read(receiveBytes, 0, dataLength);
-            requestDOS.write(receiveBytes, 0, dataLength);
+            byte[] receiveBytes = new byte[1024];
+            for (int i = 0; i < socketMessageTypes.length; i++) {
+                dataOutputStream.write(socketMessageTypes[i].getRequestRawBytes());
+                dataOutputStream.flush();
+                dataInputStream.read(receiveBytes, 0, 3);
+                dataInputStream.read(receiveBytes, 3, (receiveBytes[1] << 8) + receiveBytes[2]);
+                socketMessageTypes[i].unpackResponseRawBytes(receiveBytes);
+                publishProgress(i * 100 / socketMessageTypes.length);
+            }
         } catch (IOException e) {
             Log.d(TAG, e.getMessage());
         }
         Log.d(TAG, String.format("doInBackground in SocketAsyncTask thread"));
-        return requestBAOS;
+        return socketMessageTypes;
     }
 
     @Override
-    protected void onProgressUpdate(Integer... values) {
-        super.onProgressUpdate(values);
-        Log.d(TAG, String.format("onProgressUpdate in UI thread, %d", values[0]));
+    protected void onProgressUpdate(Integer... progress) {
+        super.onProgressUpdate(progress);
+        Log.d(TAG, String.format("onProgressUpdate in UI thread, %d", progress[0]));
     }
 
     @Override
-    protected void onPostExecute(ByteArrayOutputStream responseRawDatas) {
-        super.onPostExecute(responseRawDatas);
-        SocketMessageType socketMessageType = SocketMessageType.GetOperatingMode;
-        try {
-            if( socketMessageType.unpackResponseRawBytes(responseRawDatas.toByteArray())==0){
-                int intOperatingMode=(int)socketMessageType.responseValue;
-                Log.d(TAG, String.format("onPostExecute in UI thread, %d", intOperatingMode));
-            }else
-            {
-                Log.d(TAG, String.format("onPostExecute in UI thread, failed" ));
-            }
-        } catch (Exception e) {
-            Log.d(TAG, e.getMessage());
+    protected void onPostExecute(SocketMessageType[] socketMessageTypes) {
+        super.onPostExecute(socketMessageTypes);
+        for (SocketMessageType socketMessageType : socketMessageTypes) {
+            Log.d(TAG, String.format("onPostExecute in UI thread, %s", socketMessageType.responseValue));
         }
     }
 
@@ -102,7 +91,11 @@ public class SocketAsyncTask extends AsyncTask<ByteArrayOutputStream, Integer, B
             dataInputStream = new DataInputStream(new BufferedInputStream(inputStream));
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(outputStream));
             Log.d(TAG, "The robot is connected");
+        }else
+        {
+            Log.d(TAG, "The robot is already connected");
         }
+
     }
 
 }
