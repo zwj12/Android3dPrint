@@ -26,7 +26,7 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
 
     private static String HOST = "10.0.2.2";
     private static int PORT = 3003;
-    private static Socket socket = new Socket();
+    private static Socket socket =null;
     private static OutputStream outputStream;
     private static InputStream inputStream;
     private static DataInputStream dataInputStream;
@@ -59,6 +59,11 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
                 dataInputStream.read(receiveBytes, 3, (receiveBytes[1] << 8) + receiveBytes[2]);
                 socketMessageTypes[i].unpackResponseRawBytes(receiveBytes);
                 publishProgress(i * 100 / socketMessageTypes.length);
+                if(socketMessageTypes[i]==SocketMessageType.CloseConnection){
+                    socket.close();
+                    socket=null;
+                    break;
+                }
             }
         } catch (IOException e) {
             Log.d(TAG, e.getMessage());
@@ -77,12 +82,16 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
     protected void onPostExecute(SocketMessageType[] socketMessageTypes) {
         super.onPostExecute(socketMessageTypes);
         for (SocketMessageType socketMessageType : socketMessageTypes) {
-            Log.d(TAG, String.format("onPostExecute in UI thread, %s", socketMessageType.responseValue));
+            if(socketMessageType!=null){
+                Log.d(TAG, String.format("onPostExecute in UI thread, %s", socketMessageType.responseValue));
+            }
         }
+        this.activity.RefreshUI(socketMessageTypes);
     }
 
     private void connectToRobot() throws IOException {
-        if (!socket.isConnected() || socket.isClosed()) {
+        if (socket==null || !socket.isConnected() || socket.isClosed() ) {
+            socket=new Socket();
             SocketAddress endpoint = new InetSocketAddress(HOST, PORT);
             socket.connect(endpoint, connectTimeOut);
             socket.setSoTimeout(soTimeOut);

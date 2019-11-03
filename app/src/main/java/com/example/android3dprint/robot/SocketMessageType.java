@@ -25,8 +25,8 @@ public enum SocketMessageType {
     SetSignalGo(17, -1, 145, 0),
     SetSignalAo(18, -1, 146, 0),
 
-    GetSymbolData(24, -1, 152, -1),
-    SetSymbolData(25, -1, 153, -1),
+    GetNumData(24, -1, 152, 4),
+    SetNumData(25, -1, 153, 0),
 
     Error(-1, 0, 255, 0);
 
@@ -85,6 +85,32 @@ public enum SocketMessageType {
         this.signalValue = signalValue;
     }
 
+    private String symbolName;
+
+    public String getSymbolName() {
+        return symbolName;
+    }
+
+    public void setSymbolName(String symbolName) {
+        this.symbolName = symbolName;
+    }
+
+    private Object symbolValue;
+
+    public Object getSymbolValue() {
+        return symbolValue;
+    }
+
+    public void setSymbolValue(Object symbolValue) {
+        this.symbolValue = symbolValue;
+    }
+
+    private boolean responseError;
+
+    public boolean isResponseError() {
+        return responseError;
+    }
+
     public Object responseValue;
 
     SocketMessageType(int requestCommand, int requestDataLength, int responseCommand, int responseDataLength) {
@@ -97,6 +123,7 @@ public enum SocketMessageType {
     public byte[] getRequestRawBytes() throws IOException {
         ByteArrayOutputStream requestBAOS = new ByteArrayOutputStream(1024);
         this.packRequestRawBytes(requestBAOS);
+//        Log.d(TAG,String.format("%d,%d,%d",this.requestCommand,this.requestDataLength,requestBAOS.toByteArray().length));
         return requestBAOS.toByteArray();
     }
 
@@ -139,11 +166,22 @@ public enum SocketMessageType {
                 break;
             case SetSignalAo:
                 this.requestDataLength = signalName.length() + 4;
-                requestDOS.writeFloat((float) signalValue);
                 this.packSocketHeader(requestDOS);
+                requestDOS.writeFloat((float) signalValue);
                 requestDOS.writeBytes(signalName);
+//                Log.d(TAG,String.format("%d,%d",this.requestCommand,this.requestDataLength));
                 break;
-
+            case GetNumData:
+                this.requestDataLength = symbolName.length();
+                this.packSocketHeader(requestDOS);
+                requestDOS.writeBytes(symbolName);
+                break;
+            case SetNumData:
+                this.requestDataLength = symbolName.length() + 4;
+                this.packSocketHeader(requestDOS);
+                requestDOS.writeFloat(Float.parseFloat( symbolValue.toString()));
+                requestDOS.writeBytes(symbolName);
+                break;
         }
     }
 
@@ -173,21 +211,25 @@ public enum SocketMessageType {
             return -1;
         }
         SocketMessageType socketMessageType = SocketMessageType.valueOf(this.name());
+        this.responseError=true;
         switch (socketMessageType) {
             case CloseConnection:
             case SetSignalDo:
             case SetSignalGo:
             case SetSignalAo:
-                if (responseDataLength != socketMessageType.getResponseDataLength()) {
+            case SetNumData:
+                if (responseDataLength != this.getResponseDataLength()) {
                     requestDIS.skipBytes(responseDataLength);
+                    this.responseError=false;
                     return -1;
                 }
                 break;
             case GetOperatingMode:
             case GetRunMode:
             case GetRobotStatus:
-                if (responseDataLength != socketMessageType.getResponseDataLength()) {
+                if (responseDataLength != this.getResponseDataLength()) {
                     requestDIS.skipBytes(responseDataLength);
+                    this.responseError=false;
                     return -1;
                 } else {
                     responseValue = requestDIS.readInt();
@@ -195,8 +237,9 @@ public enum SocketMessageType {
                 break;
             case GetSignalDo:
             case GetSignalDi:
-                if (responseDataLength != socketMessageType.getResponseDataLength()) {
+                if (responseDataLength != this.getResponseDataLength()) {
                     requestDIS.skipBytes(responseDataLength);
+                    this.responseError=false;
                     return -1;
                 } else {
                     signalValue = requestDIS.readByte();
@@ -205,8 +248,9 @@ public enum SocketMessageType {
                 break;
             case GetSignalGo:
             case GetSignalGi:
-                if (responseDataLength != socketMessageType.getResponseDataLength()) {
+                if (responseDataLength != this.getResponseDataLength()) {
                     requestDIS.skipBytes(responseDataLength);
+                    this.responseError=false;
                     return -1;
                 } else {
                     signalValue = requestDIS.readInt();
@@ -215,16 +259,24 @@ public enum SocketMessageType {
                 break;
             case GetSignalAo:
             case GetSignalAi:
-                if (responseDataLength != socketMessageType.getResponseDataLength()) {
+                if (responseDataLength != this.getResponseDataLength()) {
                     requestDIS.skipBytes(responseDataLength);
+                    this.responseError=false;
                     return -1;
                 } else {
                     signalValue = requestDIS.readFloat();
                     responseValue = signalValue;
                 }
                 break;
-            case GetSymbolData:
-            case SetSymbolData:
+            case GetNumData:
+                if (responseDataLength != this.getResponseDataLength()) {
+                    requestDIS.skipBytes(responseDataLength);
+                    this.responseError=false;
+                    return -1;
+                } else {
+                    symbolValue = requestDIS.readFloat();
+                    responseValue = symbolValue;
+                }
                 break;
         }
         return 0;

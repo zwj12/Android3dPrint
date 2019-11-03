@@ -51,17 +51,62 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void AsyncTask(View v)throws IOException {
-        SocketMessageType[] socketMessageTypes=new SocketMessageType[6];
-        socketMessageTypes[0]=SocketMessageType.GetOperatingMode;
-        socketMessageTypes[1]=SocketMessageType.GetRunMode;
-        socketMessageTypes[2]=SocketMessageType.GetRobotStatus;
-        socketMessageTypes[3]=SocketMessageType.GetSignalDo;
-        socketMessageTypes[3].setSignalName("sdoTest1");
-        socketMessageTypes[4]=SocketMessageType.GetSignalGo;
-        socketMessageTypes[4].setSignalName("sgoTest1");
-        socketMessageTypes[socketMessageTypes.length-1]=SocketMessageType.CloseConnection;
+        SocketMessageType[] socketMessageTypes=new SocketMessageType[20];
+        int i=-1;
+        socketMessageTypes[++i]=SocketMessageType.GetOperatingMode;
+        socketMessageTypes[++i]=SocketMessageType.GetRunMode;
+        socketMessageTypes[++i]=SocketMessageType.GetRobotStatus;
+
+        socketMessageTypes[++i]=SocketMessageType.GetSignalDo;
+        socketMessageTypes[i].setSignalName("sdoTest1");
+        socketMessageTypes[++i]=SocketMessageType.GetSignalGo;
+        socketMessageTypes[i].setSignalName("sgoTest1");
+        socketMessageTypes[++i]=SocketMessageType.GetSignalAo;
+        socketMessageTypes[i].setSignalName("saoTest1");
+
+        socketMessageTypes[++i]=SocketMessageType.GetSignalDi;
+        socketMessageTypes[i].setSignalName("sdiTest1");
+        socketMessageTypes[++i]=SocketMessageType.GetSignalGi;
+        socketMessageTypes[i].setSignalName("sgiTest1");
+        socketMessageTypes[++i]=SocketMessageType.GetSignalAi;
+        socketMessageTypes[i].setSignalName("saiTest1");
+
+        int j=0;
+        socketMessageTypes[++i]=SocketMessageType.SetSignalDo;
+        socketMessageTypes[i].setSignalName("sdoTest1");
+        socketMessageTypes[i].setSignalValue(j);
+        socketMessageTypes[++i]=SocketMessageType.SetSignalGo;
+        socketMessageTypes[i].setSignalName("sgoTest1");
+        socketMessageTypes[i].setSignalValue(j+1);
+        socketMessageTypes[++i]=SocketMessageType.SetSignalAo;
+        socketMessageTypes[i].setSignalName("saoTest1");
+        socketMessageTypes[i].setSignalValue(j+2);
+
+        socketMessageTypes[++i]=SocketMessageType.GetNumData;
+        socketMessageTypes[i].setSymbolName("reg1");
+
+        socketMessageTypes[++i]=SocketMessageType.SetNumData;
+        socketMessageTypes[i].setSymbolName("reg2");
+        socketMessageTypes[i].setSymbolValue(j+3);
+
+        socketMessageTypes[++i]=SocketMessageType.CloseConnection;
+
         SocketAsyncTask socketAsyncTask=new SocketAsyncTask(HOST,PORT,this);
         socketAsyncTask.execute(socketMessageTypes);
+    }
+
+    public void RefreshUI(SocketMessageType[] socketMessageTypes){
+        EditText editText;
+        for(SocketMessageType socketMessageType : socketMessageTypes){
+            if(socketMessageType==null){
+                continue;
+            }
+            switch (socketMessageType){
+                case  GetNumData:
+                    editText = (EditText) findViewById(R.id.editTextOutput);
+                    editText.setText(socketMessageType.getSymbolValue().toString());
+            }
+        }
     }
 
 }
