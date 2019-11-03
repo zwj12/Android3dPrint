@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void AsyncTask(View v)throws IOException {
-        SocketMessageType[] socketMessageTypes=new SocketMessageType[20];
+        SocketMessageType[] socketMessageTypes=new SocketMessageType[30];
         int i=-1;
         socketMessageTypes[++i]=SocketMessageType.GetOperatingMode;
         socketMessageTypes[++i]=SocketMessageType.GetRunMode;
@@ -88,6 +88,13 @@ public class MainActivity extends AppCompatActivity {
         socketMessageTypes[++i]=SocketMessageType.SetNumData;
         socketMessageTypes[i].setSymbolName("reg2");
         socketMessageTypes[i].setSymbolValue(j+3);
+
+        socketMessageTypes[++i]=SocketMessageType.GetWeldData;
+        socketMessageTypes[i].setSymbolName("weld01");
+
+        socketMessageTypes[++i]=SocketMessageType.SetWeldData;
+        socketMessageTypes[i].setSymbolName("weld01");
+        socketMessageTypes[i].setSymbolValue("[11,12,[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0]]");
 
         socketMessageTypes[++i]=SocketMessageType.CloseConnection;
 
