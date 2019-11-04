@@ -1,5 +1,7 @@
 package com.example.android3dprint.robot;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.android3dprint.R;
@@ -9,6 +11,8 @@ import java.text.DecimalFormat;
 import java.util.Locale;
 
 public class SeamData implements Serializable {
+    private static final String TAG = "SeamData";
+
     private final String strTaskName = "T_ROB1";
     private final String strDataModuleName = "JQR365WeldDataModule";
     private final String strDataName = "seam";
@@ -202,11 +206,11 @@ public class SeamData implements Serializable {
                 df.format(this.bbackTime), df.format(this.rbackTime), this.bbackArc, df.format(this.postflowTime));
     }
 
-    void parse(String strSeamData) {
+    public void parse(String strSeamData) {
         int numStartIndex = 0;
         int numStopIndex = strSeamData.indexOf("[");
 
-        // console.log(strSeamData);
+//        Log.d(TAG, strSeamData);
 
         numStartIndex = numStopIndex + 1;
         numStopIndex = strSeamData.indexOf(",", numStartIndex);

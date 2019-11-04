@@ -188,7 +188,7 @@ public class WeaveData implements Serializable {
                 df.format(this.orgWeaveBias));
     }
 
-    void parse(String strWeaveData) {
+    public void parse(String strWeaveData) {
         int numStartIndex = 0;
         int numStopIndex = strWeaveData.indexOf("[");
 

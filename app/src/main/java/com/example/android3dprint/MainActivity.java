@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.android3dprint.robot.ArcData;
+import com.example.android3dprint.robot.SeamData;
 import com.example.android3dprint.robot.SocketAsyncTask;
 import com.example.android3dprint.robot.SocketMessageType;
+import com.example.android3dprint.robot.WeaveData;
 import com.example.android3dprint.robot.WeldData;
 
 import java.io.ByteArrayOutputStream;
@@ -94,7 +96,30 @@ public class MainActivity extends AppCompatActivity {
 
         socketMessageTypes[++i]=SocketMessageType.SetWeldData;
         socketMessageTypes[i].setSymbolName("weld01");
-        socketMessageTypes[i].setSymbolValue("[11,12,[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0]]");
+        WeldData weldData=new WeldData();
+        weldData.parse("[11,12,[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0]]");
+        weldData.setWeldSpeed(15);
+        socketMessageTypes[i].setSymbolValue(weldData);
+
+        socketMessageTypes[++i]=SocketMessageType.GetSeamData;
+        socketMessageTypes[i].setSymbolName("seam1");
+
+        socketMessageTypes[++i]=SocketMessageType.SetSeamData;
+        socketMessageTypes[i].setSymbolName("seam1");
+        SeamData seamData=new SeamData();
+        seamData.parse("[0,1.5,[71,0,0,0,0,0,0,0,0],0,0,0,0,0,[72,0,0,0,0,0,0,0,0],0,0,[73,0,0,0,0,0,0,0,0],0,0,[74,0,0,0,0,0,0,0,0],2.3]");
+        seamData.setPreflowTime(2.5);
+        socketMessageTypes[i].setSymbolValue(seamData);
+
+        socketMessageTypes[++i]=SocketMessageType.GetWeaveData;
+        socketMessageTypes[i].setSymbolName("weave01");
+
+        socketMessageTypes[++i]=SocketMessageType.SetWeaveData;
+        socketMessageTypes[i].setSymbolName("weave01");
+        WeaveData weaveData=new WeaveData();
+        weaveData.parse("[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]");
+        weaveData.setWeaveShape(3);
+        socketMessageTypes[i].setSymbolValue(weaveData);
 
         socketMessageTypes[++i]=SocketMessageType.CloseConnection;
 

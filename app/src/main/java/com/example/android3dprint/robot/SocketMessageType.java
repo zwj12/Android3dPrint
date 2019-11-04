@@ -29,6 +29,10 @@ public enum SocketMessageType {
     SetNumData(25, -1, 153, 0),
     GetWeldData(32, -1, 160, -1),
     SetWeldData(33, -1, 161, 0),
+    GetSeamData(34, -1, 162, -1),
+    SetSeamData(35, -1, 163, 0),
+    GetWeaveData(36, -1, 164, -1),
+    SetWeaveData(37, -1, 165, 0),
 
     Error(-1, 0, 255, 0);
 
@@ -175,6 +179,8 @@ public enum SocketMessageType {
                 break;
             case GetNumData:
             case GetWeldData:
+            case GetSeamData:
+            case GetWeaveData:
                 this.requestDataLength = symbolName.length();
                 this.packSocketHeader(requestDOS);
                 requestDOS.writeBytes(symbolName);
@@ -186,6 +192,8 @@ public enum SocketMessageType {
                 requestDOS.writeBytes(symbolName);
                 break;
             case SetWeldData:
+            case SetSeamData:
+            case SetWeaveData:
                 this.requestDataLength = symbolName.length() + 1 + symbolValue.toString().length();
                 this.packSocketHeader(requestDOS);
                 requestDOS.writeBytes(symbolName);
@@ -222,6 +230,8 @@ public enum SocketMessageType {
         }
         SocketMessageType socketMessageType = SocketMessageType.valueOf(this.name());
         this.responseError = true;
+        byte[] valueBytes;
+        int readDataLength;
         switch (socketMessageType) {
             case CloseConnection:
             case SetSignalDo:
@@ -229,6 +239,8 @@ public enum SocketMessageType {
             case SetSignalAo:
             case SetNumData:
             case SetWeldData:
+            case SetSeamData:
+            case SetWeaveData:
                 if (responseDataLength != this.getResponseDataLength()) {
                     requestDIS.skipBytes(responseDataLength);
                     this.responseError = false;
@@ -290,14 +302,44 @@ public enum SocketMessageType {
                 }
                 break;
             case GetWeldData:
-                byte[] valueBytes = new byte[responseDataLength];
-                int total = requestDIS.read(valueBytes, 0, responseDataLength);
-                if(total!=responseDataLength){
+                valueBytes = new byte[responseDataLength];
+                readDataLength = requestDIS.read(valueBytes, 0, responseDataLength);
+                if (readDataLength != responseDataLength) {
                     this.responseError = false;
                     return -1;
-                }else{
-                    String strValue=new String(valueBytes);
-                    symbolValue=strValue;
+                } else {
+                    String strValue = new String(valueBytes);
+                    WeldData weldData = new WeldData();
+                    weldData.parse(strValue);
+                    symbolValue = weldData;
+                    responseValue = symbolValue;
+                }
+                break;
+            case GetSeamData:
+                valueBytes = new byte[responseDataLength];
+                readDataLength = requestDIS.read(valueBytes, 0, responseDataLength);
+                if (readDataLength != responseDataLength) {
+                    this.responseError = false;
+                    return -1;
+                } else {
+                    String strValue = new String(valueBytes);
+                    SeamData seamData = new SeamData();
+                    seamData.parse(strValue);
+                    symbolValue = seamData;
+                    responseValue = symbolValue;
+                }
+                break;
+            case GetWeaveData:
+                valueBytes = new byte[responseDataLength];
+                readDataLength = requestDIS.read(valueBytes, 0, responseDataLength);
+                if (readDataLength != responseDataLength) {
+                    this.responseError = false;
+                    return -1;
+                } else {
+                    String strValue = new String(valueBytes);
+                    WeaveData weaveData = new WeaveData();
+                    weaveData.parse(strValue);
+                    symbolValue = weaveData;
                     responseValue = symbolValue;
                 }
                 break;
