@@ -1,12 +1,16 @@
 package com.example.android3dprint;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -26,11 +30,22 @@ public class MainActivity extends AppCompatActivity
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private static String HOST = "10.0.2.2";
     private static int PORT = 3003;
+    private static final String TAG = "MainActivity";
+    private MutableLiveData<Integer> mNumberLiveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mNumberLiveData = new MutableLiveData<>();
+
+        mNumberLiveData.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                Log.d(TAG, "onChanged: " + integer);
+            }
+        });
 
     }
 
@@ -140,6 +155,12 @@ public class MainActivity extends AppCompatActivity
     public void openScrolling(View view) {
         // Do something in response to button
         Intent intent = new Intent(this, WeldParameterV2Activity.class);
+        startActivity(intent);
+    }
+
+    public void openViewModel(View view) {
+        // Do something in response to button
+        Intent intent = new Intent(this, WeldParameterV3Activity.class);
         startActivity(intent);
     }
 

@@ -12,13 +12,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.android3dprint.robot.SeamData;
 import com.example.android3dprint.robot.SocketMessageType;
 import com.example.android3dprint.robot.WeaveData;
 import com.example.android3dprint.robot.WeldData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -36,6 +41,8 @@ public class WeldParameterFragment extends Fragment {
     private static final String ARG_SEAM_DATA="seamdata";
     private static final String ARG_WELD_DATA="welddata";
     private static final String ARG_WEAVE_DATA="weavedata";
+    private List<String> listIndex = new ArrayList<String>();
+    private ArrayAdapter<String> adapterIndex;
 
     // TODO: Rename and change types of parameters
     private SeamData seamData;
@@ -73,6 +80,7 @@ public class WeldParameterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             seamData =(SeamData) getArguments().getSerializable(ARG_SEAM_DATA);
             weldData =(WeldData) getArguments().getSerializable(ARG_WELD_DATA);
@@ -92,15 +100,24 @@ public class WeldParameterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((EditText)view.findViewById(R.id.editTextIndex)).setText(String.valueOf(weldData.getIndex()));
+//        ((EditText)view.findViewById(R.id.editTextIndex)).setText(String.valueOf(weldData.getIndex()));
         ((EditText)view.findViewById(R.id.editTextWeldSpeed)).setText(String.valueOf(weldData.getWeldSpeed()));
         ((EditText)view.findViewById(R.id.editTextMode)).setText(String.valueOf(weldData.getMainArc().getMode()));
 
+        for(int i=1;i<=32;i++){
+            listIndex.add(String.format("Weld%02d", i));
+        }
+
+        Spinner spinnertext;
+        spinnertext = (Spinner) view.findViewById(R.id.spinnerIndex);
+        adapterIndex = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, listIndex);
+        adapterIndex.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnertext.setAdapter(adapterIndex);
     }
 
     public void refreshUI(SocketMessageType[] socketMessageTypes){
         Log.d(TAG,"refreshUI");
-        ((EditText) getActivity().findViewById(R.id.editTextIndex)).setText(String.valueOf(weldData.getIndex()));
+//        ((EditText) getActivity().findViewById(R.id.editTextIndex)).setText(String.valueOf(weldData.getIndex()));
         ((EditText) getActivity().findViewById(R.id.editTextWeldSpeed)).setText(String.valueOf(weldData.getWeldSpeed()));
         ((EditText) getActivity().findViewById(R.id.editTextMode)).setText(String.valueOf(weldData.getMainArc().getMode()));
     }
@@ -113,8 +130,8 @@ public class WeldParameterFragment extends Fragment {
     }
 
     public void save(){
-        editText = (EditText) getActivity().findViewById(R.id.editTextIndex);
-        weldData.setIndex(Integer.parseInt(editText.getText().toString()));
+//        editText = (EditText) getActivity().findViewById(R.id.editTextIndex);
+//        weldData.setIndex(Integer.parseInt(editText.getText().toString()));
 
         editText = (EditText) getActivity().findViewById(R.id.editTextWeldSpeed);
         weldData.setWeldSpeed(Double.parseDouble(editText.getText().toString()));
