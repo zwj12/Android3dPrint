@@ -1,8 +1,11 @@
 package com.example.android3dprint;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -18,7 +21,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements WeldParameterFragment.OnFragmentInteractionListener , SocketAsyncTask.OnSocketListener{
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private static String HOST = "10.0.2.2";
     private static int PORT = 3003;
@@ -27,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 
     public void sendMessage(View view) {
@@ -127,7 +132,19 @@ public class MainActivity extends AppCompatActivity {
         socketAsyncTask.execute(socketMessageTypes);
     }
 
-    public void RefreshUI(SocketMessageType[] socketMessageTypes){
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    public void openScrolling(View view) {
+        // Do something in response to button
+        Intent intent = new Intent(this, WeldParameterV2Activity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void refreshUI(SocketMessageType[] socketMessageTypes){
         EditText editText;
         for(SocketMessageType socketMessageType : socketMessageTypes){
             if(socketMessageType==null){
@@ -140,5 +157,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 }

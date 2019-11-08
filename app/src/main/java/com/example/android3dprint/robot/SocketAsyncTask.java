@@ -1,5 +1,6 @@
 package com.example.android3dprint.robot;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Message;
 import android.util.Log;
@@ -32,12 +33,12 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
     private static DataInputStream dataInputStream;
     private static DataOutputStream dataOutputStream;
 
-    private MainActivity activity;
+    private OnSocketListener socketListener;
 
-    public SocketAsyncTask(String HOST, int PORT, MainActivity activity) {
+    public SocketAsyncTask(String HOST, int PORT, OnSocketListener socketListener) {
         SocketAsyncTask.HOST = HOST;
         SocketAsyncTask.PORT = PORT;
-        this.activity = activity;
+        this.socketListener = socketListener;
     }
 
     @Override
@@ -86,7 +87,7 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
                 Log.d(TAG, String.format("onPostExecute in UI thread, %s", socketMessageType.responseValue));
             }
         }
-        this.activity.RefreshUI(socketMessageTypes);
+        this.socketListener.refreshUI(socketMessageTypes);
     }
 
     private void connectToRobot() throws IOException {
@@ -105,6 +106,10 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
             Log.d(TAG, "The robot is already connected");
         }
 
+    }
+
+    public interface OnSocketListener {
+        void refreshUI(SocketMessageType[] socketMessageTypes);
     }
 
 }

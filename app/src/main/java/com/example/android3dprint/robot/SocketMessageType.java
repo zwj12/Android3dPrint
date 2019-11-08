@@ -309,9 +309,10 @@ public enum SocketMessageType {
                     return -1;
                 } else {
                     String strValue = new String(valueBytes);
-                    WeldData weldData = new WeldData();
-                    weldData.parse(strValue);
-                    symbolValue = weldData;
+                    if (!(this.symbolValue instanceof WeldData)) {
+                        symbolValue = new WeldData();
+                    }
+                    ((WeldData) symbolValue).parse(strValue);
                     responseValue = symbolValue;
                 }
                 break;
@@ -323,9 +324,10 @@ public enum SocketMessageType {
                     return -1;
                 } else {
                     String strValue = new String(valueBytes);
-                    SeamData seamData = new SeamData();
-                    seamData.parse(strValue);
-                    symbolValue = seamData;
+                    if (!(this.symbolValue instanceof SeamData)) {
+                        symbolValue = new SeamData();
+                    }
+                    ((SeamData) symbolValue).parse(strValue);
                     responseValue = symbolValue;
                 }
                 break;
@@ -337,9 +339,10 @@ public enum SocketMessageType {
                     return -1;
                 } else {
                     String strValue = new String(valueBytes);
-                    WeaveData weaveData = new WeaveData();
-                    weaveData.parse(strValue);
-                    symbolValue = weaveData;
+                    if (!(this.symbolValue instanceof WeaveData)) {
+                        symbolValue = new WeaveData();
+                    }
+                    ((WeaveData) symbolValue).parse(strValue);
                     responseValue = symbolValue;
                 }
                 break;
