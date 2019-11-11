@@ -12,6 +12,22 @@ public class WeldData implements Serializable {
     private final  String strDataName = "weld";
     private final  String strDataType = "welddata";
 
+    public String getStrTaskName() {
+        return strTaskName;
+    }
+
+    public String getStrDataModuleName() {
+        return strDataModuleName;
+    }
+
+    public String getStrDataName() {
+        return strDataName;
+    }
+
+    public String getStrDataType() {
+        return strDataType;
+    }
+
     private int index;
 
     private double weldSpeed;

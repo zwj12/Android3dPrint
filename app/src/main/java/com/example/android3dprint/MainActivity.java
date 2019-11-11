@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity
     public void openViewModel(View view) {
         // Do something in response to button
         Intent intent = new Intent(this, WeldParameterV3Activity.class);
+//        Intent intent = new Intent(this, Main3Activity.class);
         startActivity(intent);
     }
 

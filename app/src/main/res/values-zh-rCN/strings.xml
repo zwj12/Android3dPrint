@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">程序</string>
+    <string name="welding_parameter_index">ID</string>
+    <string name="welding_parameter_weld_speed">焊接速度</string>
+    <string name="welding_parameter_mode">模式</string>
+    <string name="welding_parameter_current">电流</string>
+    <string name="welding_parameter_voltage">电压</string>
+    <string name="welding_parameter_pre_flow">提前送丝</string>
+    <string name="welding_parameter_post_flow">滞后停气</string>
+    <string name="welding_parameter_weave_shape">摆动形状</string>
+    <string name="welding_parameter_weave_length">摆长</string>
+    <string name="welding_parameter_weave_width">摆宽</string>
+    <string name="welding_parameter_weave_height">摆高</string>
+    <string name="welding_parameter_dwell_left">左停留</string>
+    <string name="welding_parameter_dwell_center">中间停留</string>
+    <string name="welding_parameter_dwell_right">右停留</string>
+    <string name="welding_parameter_weave_dir">方向角</string>
+    <string name="welding_parameter_weave_tilt">倾角</string>
+    <string name="welding_parameter_weave_ori">摆角</string>
+
+</resources>
