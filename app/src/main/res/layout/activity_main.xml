@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextInput" />
 
     <Button
-        android:id="@+id/buttonCheck"
+        android:id="@+id/buttonUpdateTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -71,7 +71,7 @@
         android:text="SocketTest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonUpdateTest" />
 
     <Button
         android:id="@+id/button_SocketAsyncTask"

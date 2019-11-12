@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.databinding.BaseObservable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.example.android3dprint.robot.SeamData;
@@ -54,6 +55,14 @@ public class WeldParameterV3ViewModel extends ViewModel {
     private MutableLiveData<SeamData> seamDataMutableLiveData;
     private MutableLiveData<WeldData> weldDataMutableLiveData;
     private MutableLiveData<WeaveData> weaveDataMutableLiveData;
+    private MutableLiveData<String> testMutableLiveData;
+
+    LiveData username;
+
+    public WeldParameterV3ViewModel() {
+//        String result = Repository.userName;
+//        userName = Transformations.map(result, result -> result.value);
+    }
 
     public LiveData<Integer> getIndex() {
         if (indexMutableLiveData == null) {
@@ -87,6 +96,14 @@ public class WeldParameterV3ViewModel extends ViewModel {
         return weaveDataMutableLiveData;
     }
 
+    public LiveData<String> getTest() {
+        if (testMutableLiveData == null) {
+            testMutableLiveData = new MutableLiveData<String>();
+            testMutableLiveData.setValue("Test");
+        }
+        return testMutableLiveData;
+    }
+
     public void setIndex(Integer index) {
         if (indexMutableLiveData == null) {
             indexMutableLiveData = new MutableLiveData<Integer>();
@@ -113,5 +130,12 @@ public class WeldParameterV3ViewModel extends ViewModel {
             weaveDataMutableLiveData = new MutableLiveData<WeaveData>();
         }
         weaveDataMutableLiveData.postValue(weaveData);
+    }
+
+    public void setTest(String test) {
+        if (testMutableLiveData == null) {
+            testMutableLiveData = new MutableLiveData<String>();
+        }
+        testMutableLiveData.postValue(test);
     }
 }

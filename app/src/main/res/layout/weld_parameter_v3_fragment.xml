@@ -134,7 +134,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_voltage"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:text="@{viewModel.test}"
+                    />
 
             </LinearLayout>
 
@@ -157,7 +159,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_pre_flow"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:text="@{String.valueOf(viewModel.weldData.mainArc.current)}"/>
 
             </LinearLayout>
 
@@ -412,6 +415,19 @@
                     android:inputType="textPersonName" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonUpdateTest"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Check" />
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
