@@ -18,16 +18,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android3dprint.robot.SocketAsyncTask;
 import com.example.android3dprint.robot.SocketMessageType;
 import com.example.android3dprint.robot.WeaveData;
 import com.example.android3dprint.robot.WeldData;
 import com.example.android3dprint.ui.weldparameterv3.WeldParameterV3Fragment;
 import com.example.android3dprint.ui.weldparameterv3.WeldParameterV3ViewModel;
 
-public class WeldParameterV3Activity extends AppCompatActivity {
+public class WeldParameterV3Activity extends AppCompatActivity
+        implements SocketAsyncTask.OnSocketListener {
     private static final String TAG = "WeldParameterV3Activity";
-
     private WeldParameterV3ViewModel viewModel;
+    private SocketAsyncTask socketAsyncTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class WeldParameterV3Activity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, WeldParameterV3Fragment.newInstance())
+                    .replace(R.id.frameLayout, WeldParameterV3Fragment.newInstance(), "WeldParameterV3Fragment")
                     .commitNow();
         }
 
@@ -56,22 +58,57 @@ public class WeldParameterV3Activity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int i;
+        SocketMessageType[] socketMessageTypes;
         switch (item.getItemId()) {
             case R.id.action_save:
-                Log.d(TAG,"action_refresh" + viewModel.getWeldData().getValue().toString());
-                Log.d(TAG,"action_refresh" + viewModel.getRemark().getValue());
+                WeldParameterV3Fragment fragment = (WeldParameterV3Fragment) getSupportFragmentManager()
+                        .findFragmentByTag("WeldParameterV3Fragment");
+                fragment.SaveWeldParameter();
+
+                socketAsyncTask = new SocketAsyncTask(viewModel.HOST, viewModel.PORT, this);
+                socketMessageTypes = new SocketMessageType[4];
+                i = -1;
+
+                socketMessageTypes[++i] = SocketMessageType.SetSeamData;
+                socketMessageTypes[i].setSymbolName(String.format("seam%02d", viewModel.getIndex().getValue()));
+                socketMessageTypes[i].setSymbolValue(viewModel.getSeamData().getValue());
+
+                socketMessageTypes[++i] = SocketMessageType.SetWeldData;
+                socketMessageTypes[i].setSymbolName(String.format("weld%02d", viewModel.getIndex().getValue()));
+                socketMessageTypes[i].setSymbolValue(viewModel.getWeldData().getValue());
+
+                socketMessageTypes[++i] = SocketMessageType.SetWeaveData;
+                socketMessageTypes[i].setSymbolName(String.format("weave%02d", viewModel.getIndex().getValue()));
+                socketMessageTypes[i].setSymbolValue(viewModel.getWeaveData().getValue());
+
+                socketMessageTypes[++i] = SocketMessageType.CloseConnection;
+
+                socketAsyncTask.execute(socketMessageTypes);
+                Log.d(TAG, "action_save");
                 return true;
             case R.id.action_refresh:
-                WeldData weldData=viewModel.getWeldData().getValue();
-                weldData.setWeldSpeed(2);
-                viewModel.setWeldData(weldData);
-                viewModel.getWeldData().getValue().getMainArc().setCurrent(200);
-                viewModel.getSeamData().getValue().setPreflowTime(1);
-                viewModel.setSeamData(viewModel.getSeamData().getValue());
-                WeaveData weaveData=viewModel.getWeaveData().getValue();
-                weaveData.setWeaveShape(weaveData.getWeaveShape()+1);
-                viewModel.setWeaveData(weaveData);
-                Log.d(TAG,"action_refresh");
+
+                socketAsyncTask = new SocketAsyncTask(viewModel.HOST, viewModel.PORT, this);
+                socketMessageTypes = new SocketMessageType[4];
+                i = -1;
+
+                socketMessageTypes[++i] = SocketMessageType.GetSeamData;
+                socketMessageTypes[i].setSymbolName(String.format("seam%02d", viewModel.getIndex().getValue()));
+                socketMessageTypes[i].setSymbolValue(viewModel.getSeamData().getValue());
+
+                socketMessageTypes[++i] = SocketMessageType.GetWeldData;
+                socketMessageTypes[i].setSymbolName(String.format("weld%02d", viewModel.getIndex().getValue()));
+                socketMessageTypes[i].setSymbolValue(viewModel.getWeldData().getValue());
+
+                socketMessageTypes[++i] = SocketMessageType.GetWeaveData;
+                socketMessageTypes[i].setSymbolName(String.format("weave%02d", viewModel.getIndex().getValue()));
+                socketMessageTypes[i].setSymbolValue(viewModel.getWeaveData().getValue());
+
+                socketMessageTypes[++i] = SocketMessageType.CloseConnection;
+
+                socketAsyncTask.execute(socketMessageTypes);
+                Log.d(TAG, "action_refresh");
                 return true;
 
             case R.id.action_toast:
@@ -88,5 +125,12 @@ public class WeldParameterV3Activity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @Override
+    public void refreshUI(SocketMessageType[] socketMessageTypes) {
+        WeldParameterV3Fragment fragment = (WeldParameterV3Fragment) getSupportFragmentManager()
+                .findFragmentByTag("WeldParameterV3Fragment");
+        fragment.refreshUI(socketMessageTypes);
     }
 }

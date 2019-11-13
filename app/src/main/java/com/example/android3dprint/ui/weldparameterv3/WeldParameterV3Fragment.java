@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.android3dprint.R;
 import com.example.android3dprint.databinding.WeldParameterV3FragmentBinding;
+import com.example.android3dprint.robot.SeamData;
 import com.example.android3dprint.robot.SocketAsyncTask;
 import com.example.android3dprint.robot.SocketMessageType;
 import com.example.android3dprint.robot.WeaveData;
@@ -64,13 +65,13 @@ public class WeldParameterV3Fragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        spinner = (Spinner)getActivity().findViewById(R.id.spinnerIndex);
-        String[] strIndex=new String[32];
-        for(int i=0;i<32;i++){
-            strIndex[i]=String.format("Weld%02d",i+1);
+        spinner = (Spinner) getActivity().findViewById(R.id.spinnerIndex);
+        String[] strIndex = new String[32];
+        for (int i = 0; i < 32; i++) {
+            strIndex[i] = String.format("Weld%02d", i + 1);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getActivity(),android.R.layout.simple_spinner_item,strIndex);
+                (getActivity(), android.R.layout.simple_spinner_item, strIndex);
 //        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
 //                R.array.citys, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -89,48 +90,92 @@ public class WeldParameterV3Fragment extends Fragment
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        int index = position + 1;
+        viewModel.setIndex(index);
+
         int i;
         socketAsyncTask = new SocketAsyncTask(viewModel.HOST, viewModel.PORT, this);
         SocketMessageType[] socketMessageTypes = new SocketMessageType[4];
         i = -1;
 
-        socketMessageTypes[++i]=SocketMessageType.GetSeamData;
-        socketMessageTypes[i].setSymbolName(String.format("seam%02d",position+1));
+        socketMessageTypes[++i] = SocketMessageType.GetSeamData;
+        socketMessageTypes[i].setSymbolName(String.format("seam%02d", index));
         socketMessageTypes[i].setSymbolValue(viewModel.getSeamData().getValue());
 
-        socketMessageTypes[++i]=SocketMessageType.GetWeldData;
-        socketMessageTypes[i].setSymbolName(String.format("weld%02d",position+1));
+        socketMessageTypes[++i] = SocketMessageType.GetWeldData;
+        socketMessageTypes[i].setSymbolName(String.format("weld%02d", index));
         socketMessageTypes[i].setSymbolValue(viewModel.getWeldData().getValue());
 
-        socketMessageTypes[++i]=SocketMessageType.GetWeaveData;
-        socketMessageTypes[i].setSymbolName(String.format("weave%02d",position+1));
+        socketMessageTypes[++i] = SocketMessageType.GetWeaveData;
+        socketMessageTypes[i].setSymbolName(String.format("weave%02d", index));
         socketMessageTypes[i].setSymbolValue(viewModel.getWeaveData().getValue());
 
         socketMessageTypes[++i] = SocketMessageType.CloseConnection;
 
         socketAsyncTask.execute(socketMessageTypes);
-        Log.d(TAG,"index:"+ position + "," + id);
+        Log.d(TAG, "index:" + position + "," + id);
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        Log.d(TAG,"onNothingSelected");
+        Log.d(TAG, "onNothingSelected");
     }
 
     @Override
     public void refreshUI(SocketMessageType[] socketMessageTypes) {
-        Log.d(TAG,"refreshUI");
-        if(socketAsyncTask.isIoExceptionRaised()){
+        Log.d(TAG, "refreshUI");
+        if (socketAsyncTask.isIoExceptionRaised()) {
             Toast toast = Toast.makeText(getActivity(), "The connetion may be closed, please check it!", Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
             TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
             v.setTextColor(Color.YELLOW);
             toast.show();
-        }else{
+        } else {
             viewModel.setSeamData(viewModel.getSeamData().getValue());
             viewModel.setWeldData(viewModel.getWeldData().getValue());
             viewModel.setWeaveData(viewModel.getWeaveData().getValue());
         }
+    }
+
+    public void SaveWeldParameter() {
+        SeamData seamData = viewModel.getSeamData().getValue();
+        WeldData weldData=viewModel.getWeldData().getValue();
+        WeaveData weaveData=viewModel.getWeaveData().getValue();
+
+        editText =(EditText)( getActivity().findViewById(R.id.editTextPreFlowTime));
+        seamData.setPreflowTime(Double.parseDouble(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextPostFlowTime));
+        seamData.setPostflowTime(Double.parseDouble(editText.getText().toString()));
+
+        editText =(EditText)( getActivity().findViewById(R.id.editTextWeldSpeed));
+        weldData.setWeldSpeed(Double.parseDouble(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextMode));
+        weldData.getMainArc().setMode(Integer.parseInt(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextCurrent));
+        weldData.getMainArc().setCurrent(Double.parseDouble(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextVoltage));
+        weldData.getMainArc().setVoltage(Double.parseDouble(editText.getText().toString()));
+
+        editText =(EditText)( getActivity().findViewById(R.id.editTextWeaveShape));
+        weaveData.setWeaveShape(Integer.parseInt(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextWeaveLength));
+        weaveData.setWeaveLength(Double.parseDouble(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextWeaveWidth));
+        weaveData.setWeaveWidth(Double.parseDouble(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextWeaveHeight));
+        weaveData.setWeaveHeight(Double.parseDouble(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextDwellLeft));
+        weaveData.setDwellLeft(Double.parseDouble(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextDwellCenter));
+        weaveData.setDwellCenter(Double.parseDouble(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextDwellRight));
+        weaveData.setDwellRight(Double.parseDouble(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextWeaveDir));
+        weaveData.setWeaveDir(Double.parseDouble(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextWeaveTilt));
+        weaveData.setWeaveTilt(Double.parseDouble(editText.getText().toString()));
+        editText =(EditText)( getActivity().findViewById(R.id.editTextWeaveOri));
+        weaveData.setWeaveOri(Double.parseDouble(editText.getText().toString()));
     }
 }

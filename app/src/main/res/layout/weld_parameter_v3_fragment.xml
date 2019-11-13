@@ -62,7 +62,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_weld_speed"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:text="@{String.valueOf( viewModel.weldData.weldSpeed)}" />
 
             </LinearLayout>
@@ -86,7 +86,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_mode"
-                    android:inputType="textPersonName"
+                    android:inputType="number"
                     android:text="@{String.valueOf( viewModel.weldData.mainArc.mode)}" />
 
             </LinearLayout>
@@ -110,7 +110,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_current"
-                    android:inputType="textPersonName"
+                    android:inputType="number"
                     android:text="@{String.valueOf(viewModel.weldData.mainArc.current)}" />
 
             </LinearLayout>
@@ -134,7 +134,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_voltage"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:text="@{String.valueOf(viewModel.weldData.mainArc.voltage)}" />
 
             </LinearLayout>
@@ -158,7 +158,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_pre_flow"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:text="@{String.valueOf(viewModel.seamData.preflowTime)}" />
 
             </LinearLayout>
@@ -182,7 +182,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_post_flow"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:text="@{String.valueOf(viewModel.seamData.postflowTime)}" />
 
             </LinearLayout>
@@ -206,7 +206,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_weave_shape"
-                    android:inputType="textPersonName"
+                    android:inputType="number"
                     android:text="@{String.valueOf(viewModel.weaveData.weaveShape)}" />
 
             </LinearLayout>
@@ -230,7 +230,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_weave_length"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:text="@{String.valueOf(viewModel.weaveData.weaveLength)}" />
 
             </LinearLayout>
@@ -254,7 +254,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_weave_width"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:text="@{String.valueOf(viewModel.weaveData.weaveWidth)}" />
 
             </LinearLayout>
@@ -278,7 +278,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_weave_height"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:text="@{String.valueOf(viewModel.weaveData.weaveHeight)}" />
 
             </LinearLayout>
@@ -302,7 +302,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_dwell_left"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:text="@{String.valueOf(viewModel.weaveData.dwellLeft)}" />
 
             </LinearLayout>
@@ -326,7 +326,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_dwell_center"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:text="@{String.valueOf(viewModel.weaveData.dwellCenter)}" />
 
             </LinearLayout>
@@ -350,7 +350,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_dwell_right"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:text="@{String.valueOf(viewModel.weaveData.dwellRight)}" />
 
             </LinearLayout>
@@ -374,7 +374,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_weave_dir"
-                    android:inputType="textPersonName"
+                    android:inputType="numberSigned|numberDecimal"
                     android:text="@{String.valueOf(viewModel.weaveData.weaveDir)}" />
             </LinearLayout>
 
@@ -397,7 +397,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_weave_tilt"
-                    android:inputType="textPersonName"
+                    android:inputType="numberSigned|numberDecimal"
                     android:text="@{String.valueOf(viewModel.weaveData.weaveTilt)}" />
             </LinearLayout>
 
@@ -420,7 +420,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:hint="@string/welding_parameter_weave_ori"
-                    android:inputType="textPersonName"
+                    android:inputType="numberSigned|numberDecimal"
                     android:text="@{String.valueOf(viewModel.weaveData.weaveOri)}" />
             </LinearLayout>
 
