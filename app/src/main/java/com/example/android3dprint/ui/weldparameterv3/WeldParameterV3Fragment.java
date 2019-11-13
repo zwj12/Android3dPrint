@@ -1,8 +1,10 @@
 package com.example.android3dprint.ui.weldparameterv3;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,22 +12,34 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android3dprint.R;
 import com.example.android3dprint.databinding.WeldParameterV3FragmentBinding;
+import com.example.android3dprint.robot.SocketAsyncTask;
+import com.example.android3dprint.robot.SocketMessageType;
+import com.example.android3dprint.robot.WeaveData;
 import com.example.android3dprint.robot.WeldData;
 
-public class WeldParameterV3Fragment extends Fragment {
+public class WeldParameterV3Fragment extends Fragment
+        implements AdapterView.OnItemSelectedListener, SocketAsyncTask.OnSocketListener {
     private static final String TAG = "WeldParameterV3Fragment";
-    public WeldParameterV3ViewModel viewModel;
+    private WeldParameterV3ViewModel viewModel;
     private WeldParameterV3FragmentBinding binding;
+    private SocketAsyncTask socketAsyncTask;
 
     private EditText editText;
+    private Spinner spinner;
 
     public static WeldParameterV3Fragment newInstance() {
         return new WeldParameterV3Fragment();
@@ -39,21 +53,9 @@ public class WeldParameterV3Fragment extends Fragment {
 
 //        binding = DataBindingUtil.inflate(inflater, R.layout.weld_parameter_v3_fragment, container, false);
         binding = WeldParameterV3FragmentBinding.inflate(inflater, container, false);
-
-//        viewModel = ViewModelProviders.of(this).get(WeldParameterV3ViewModel.class);
-//        viewModel.getTest().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(String str) {
-//                Log.d(TAG, "observe" + str);
-//                EditText editText = getActivity().findViewById(R.id.editTextPostFlowTime);
-//                editText.setText(str);
-//            }
-//        });
-//        Log.d(TAG, "onCreateView: ");
-//        binding.setViewModel(viewModel);
-//        binding.setLifecycleOwner(getActivity());
-
-
+        viewModel = ViewModelProviders.of(getActivity()).get(WeldParameterV3ViewModel.class);
+        binding.setViewModel(viewModel);
+        binding.setLifecycleOwner(getActivity());
 
         return binding.getRoot();
     }
@@ -62,45 +64,73 @@ public class WeldParameterV3Fragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(WeldParameterV3ViewModel.class);
-        viewModel.getTest().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                Log.d(TAG, "observe" + str);
-                EditText editText = getActivity().findViewById(R.id.editTextPostFlowTime);
-                editText.setText(str);
-            }
-        });
-        Log.d(TAG, "onCreateView: ");
-        binding.setViewModel(viewModel);
-        binding.setLifecycleOwner(getActivity());
+        spinner = (Spinner)getActivity().findViewById(R.id.spinnerIndex);
+        String[] strIndex=new String[32];
+        for(int i=0;i<32;i++){
+            strIndex[i]=String.format("Weld%02d",i+1);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (getActivity(),android.R.layout.simple_spinner_item,strIndex);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+//                R.array.citys, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
-//        viewModel.getWeldData().observe(this, new Observer<WeldData>() {
+//        final Observer<WeaveData> nameObserver = new Observer<WeaveData>() {
 //            @Override
-//            public void onChanged(@Nullable WeldData weldData) {
-//                Log.d(TAG, "onChanged: " + weldData.toString());
+//            public void onChanged(@Nullable final WeaveData weaveData) {
+//                editText=getActivity().findViewById(R.id.editTextWeaveShape);
+//                editText.setText(String.valueOf( weaveData.getWeaveShape()));
 //            }
-//        });
-//
-        Button button = getActivity().findViewById(R.id.buttonUpdateTest);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.d(TAG, "checkMessage Michael");
-                viewModel.setTest("Michael");
-            }
-        });
-
-//        ActivityMainBinding binding = DataBindingUtil.setContentView(getActivity(), R.layout.activity_main);
-//        User user = new User("Test", "User");
-//        binding.setUser(user);
+//        };
+//        viewModel.getWeaveData().observe(this, nameObserver);
     }
 
-    public void checkMessage(View view) {
-        // Do something in response to button
-//        Log.d(TAG,"checkMessage Michael");
-//        viewModel.setTest("Michael");
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        int i;
+        socketAsyncTask = new SocketAsyncTask(viewModel.HOST, viewModel.PORT, this);
+        SocketMessageType[] socketMessageTypes = new SocketMessageType[4];
+        i = -1;
 
+        socketMessageTypes[++i]=SocketMessageType.GetSeamData;
+        socketMessageTypes[i].setSymbolName(String.format("seam%02d",position+1));
+        socketMessageTypes[i].setSymbolValue(viewModel.getSeamData().getValue());
+
+        socketMessageTypes[++i]=SocketMessageType.GetWeldData;
+        socketMessageTypes[i].setSymbolName(String.format("weld%02d",position+1));
+        socketMessageTypes[i].setSymbolValue(viewModel.getWeldData().getValue());
+
+        socketMessageTypes[++i]=SocketMessageType.GetWeaveData;
+        socketMessageTypes[i].setSymbolName(String.format("weave%02d",position+1));
+        socketMessageTypes[i].setSymbolValue(viewModel.getWeaveData().getValue());
+
+        socketMessageTypes[++i] = SocketMessageType.CloseConnection;
+
+        socketAsyncTask.execute(socketMessageTypes);
+        Log.d(TAG,"index:"+ position + "," + id);
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        Log.d(TAG,"onNothingSelected");
+    }
+
+    @Override
+    public void refreshUI(SocketMessageType[] socketMessageTypes) {
+        Log.d(TAG,"refreshUI");
+        if(socketAsyncTask.isIoExceptionRaised()){
+            Toast toast = Toast.makeText(getActivity(), "The connetion may be closed, please check it!", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+            v.setTextColor(Color.YELLOW);
+            toast.show();
+        }else{
+            viewModel.setSeamData(viewModel.getSeamData().getValue());
+            viewModel.setWeldData(viewModel.getWeldData().getValue());
+            viewModel.setWeaveData(viewModel.getWeaveData().getValue());
+        }
     }
 }

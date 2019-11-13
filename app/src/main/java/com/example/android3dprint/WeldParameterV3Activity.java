@@ -13,11 +13,13 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android3dprint.robot.SocketMessageType;
+import com.example.android3dprint.robot.WeaveData;
 import com.example.android3dprint.robot.WeldData;
 import com.example.android3dprint.ui.weldparameterv3.WeldParameterV3Fragment;
 import com.example.android3dprint.ui.weldparameterv3.WeldParameterV3ViewModel;
@@ -25,7 +27,7 @@ import com.example.android3dprint.ui.weldparameterv3.WeldParameterV3ViewModel;
 public class WeldParameterV3Activity extends AppCompatActivity {
     private static final String TAG = "WeldParameterV3Activity";
 
-    private WeldParameterV3ViewModel mViewModel;
+    private WeldParameterV3ViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +44,8 @@ public class WeldParameterV3Activity extends AppCompatActivity {
                     .commitNow();
         }
 
-        mViewModel = ViewModelProviders.of(this).get(WeldParameterV3ViewModel.class);
-//        mViewModel.getTest().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(String str) {
-//                Log.d(TAG,"observe"+str);
-//                EditText editText=findViewById(R.id.editTextWeldSpeed);
-//                editText.setText(str);
-//            }
-//        });
+        viewModel = ViewModelProviders.of(this).get(WeldParameterV3ViewModel.class);
+
     }
 
     @Override
@@ -63,16 +58,22 @@ public class WeldParameterV3Activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                Log.d(TAG,"action_refresh" + mViewModel.getTest().getValue());
+                Log.d(TAG,"action_refresh" + viewModel.getWeldData().getValue().toString());
+                Log.d(TAG,"action_refresh" + viewModel.getRemark().getValue());
                 return true;
             case R.id.action_refresh:
-                WeldData weldData=mViewModel.getWeldData().getValue();
+                WeldData weldData=viewModel.getWeldData().getValue();
                 weldData.setWeldSpeed(2);
-                mViewModel.setWeldData(weldData);
-                mViewModel.getWeldData().getValue().setWeldSpeed(3);
-                mViewModel.setTest("Michael");
+                viewModel.setWeldData(weldData);
+                viewModel.getWeldData().getValue().getMainArc().setCurrent(200);
+                viewModel.getSeamData().getValue().setPreflowTime(1);
+                viewModel.setSeamData(viewModel.getSeamData().getValue());
+                WeaveData weaveData=viewModel.getWeaveData().getValue();
+                weaveData.setWeaveShape(weaveData.getWeaveShape()+1);
+                viewModel.setWeaveData(weaveData);
                 Log.d(TAG,"action_refresh");
                 return true;
+
             case R.id.action_toast:
                 Toast toast = Toast.makeText(this, "Hello Michael!", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);

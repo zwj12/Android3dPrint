@@ -22,8 +22,13 @@ import java.net.SocketAddress;
 
 public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, SocketMessageType[]> {
     private static final String TAG = "SocketAsyncTask";
-    private static final int connectTimeOut = 10000;
-    private static final int soTimeOut = 0;
+    private static final int connectTimeOut = 1000;
+    private static final int soTimeOut = 1000;
+
+    private boolean ioExceptionRaised=false;
+    public boolean isIoExceptionRaised() {
+        return ioExceptionRaised;
+    }
 
     private static String HOST = "10.0.2.2";
     private static int PORT = 3003;
@@ -49,7 +54,7 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
 
     @Override
     protected SocketMessageType[] doInBackground(SocketMessageType... socketMessageTypes) {
-
+        Log.d(TAG, "doInBackground");
         try {
             connectToRobot();
             byte[] receiveBytes = new byte[1024];
@@ -66,8 +71,11 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
                     break;
                 }
             }
-        } catch (IOException e) {
-            Log.d(TAG, e.getMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Socket Error: " + e.getClass().toString());
+            this.ioExceptionRaised=true;
+            socket=null;
+            Log.e(TAG, e.getMessage());
         }
         Log.d(TAG, String.format("doInBackground in SocketAsyncTask thread"));
         return socketMessageTypes;
@@ -92,6 +100,8 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
 
     private void connectToRobot() throws IOException {
         if (socket==null || !socket.isConnected() || socket.isClosed() ) {
+            Log.d(TAG, "The robot is connecting");
+            this.ioExceptionRaised=false;
             socket=new Socket();
             SocketAddress endpoint = new InetSocketAddress(HOST, PORT);
             socket.connect(endpoint, connectTimeOut);

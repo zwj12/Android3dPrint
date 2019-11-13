@@ -15,54 +15,14 @@ import com.example.android3dprint.robot.WeldData;
 public class WeldParameterV3ViewModel extends ViewModel {
     private static final String TAG = "WeldParameterV3ViewModel";
 
-
-    private String firstName="michael";
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-//
-//    private String lastName="Zhu";
-//    public String getLastName() {
-//        return lastName;
-//    }
-//    public void setLastName(String firstName) {
-//        this.lastName = lastName;
-//    }
-
-
-    MutableLiveData<WeldData> liveData;
-
-    public MutableLiveData<WeldData> getLastName() {
-        if (liveData == null) {
-            liveData = new MutableLiveData<>();
-            liveData.setValue(new WeldData());
-        }
-        return liveData;
-    }
-
-    public void setLastName(WeldData name) {
-        if (liveData == null) {
-            liveData = new MutableLiveData<>();
-            liveData.setValue(new WeldData());
-        }
-        liveData.setValue(name);
-    }
+    public String HOST = "10.0.2.2";
+    public int PORT = 3003;
 
     private MutableLiveData<Integer> indexMutableLiveData;
     private MutableLiveData<SeamData> seamDataMutableLiveData;
     private MutableLiveData<WeldData> weldDataMutableLiveData;
     private MutableLiveData<WeaveData> weaveDataMutableLiveData;
-    private MutableLiveData<String> testMutableLiveData;
-
-    LiveData username;
-
-    public WeldParameterV3ViewModel() {
-//        String result = Repository.userName;
-//        userName = Transformations.map(result, result -> result.value);
-    }
+    private MutableLiveData<String> remarkMutableLiveData;
 
     public LiveData<Integer> getIndex() {
         if (indexMutableLiveData == null) {
@@ -96,12 +56,12 @@ public class WeldParameterV3ViewModel extends ViewModel {
         return weaveDataMutableLiveData;
     }
 
-    public LiveData<String> getTest() {
-        if (testMutableLiveData == null) {
-            testMutableLiveData = new MutableLiveData<String>();
-            testMutableLiveData.setValue("Test");
+    public MutableLiveData<String> getRemark() {
+        if (remarkMutableLiveData == null) {
+            remarkMutableLiveData = new MutableLiveData<String>();
+            remarkMutableLiveData.setValue("remark");
         }
-        return testMutableLiveData;
+        return remarkMutableLiveData;
     }
 
     public void setIndex(Integer index) {
@@ -132,10 +92,10 @@ public class WeldParameterV3ViewModel extends ViewModel {
         weaveDataMutableLiveData.postValue(weaveData);
     }
 
-    public void setTest(String test) {
-        if (testMutableLiveData == null) {
-            testMutableLiveData = new MutableLiveData<String>();
+    public void setRemark(String remark) {
+        if (remarkMutableLiveData == null) {
+            remarkMutableLiveData = new MutableLiveData<String>();
         }
-        testMutableLiveData.postValue(test);
+        remarkMutableLiveData.setValue(remark);
     }
 }
