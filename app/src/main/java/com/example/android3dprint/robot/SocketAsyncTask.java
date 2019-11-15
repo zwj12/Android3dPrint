@@ -22,8 +22,8 @@ import java.net.SocketAddress;
 
 public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, SocketMessageType[]> {
     private static final String TAG = "SocketAsyncTask";
-    private static final int connectTimeOut = 1000;
-    private static final int soTimeOut = 1000;
+    private static final int connectTimeOut = 2000;
+    private static final int soTimeOut = 2000;
 
     private boolean ioExceptionRaised=false;
     public boolean isIoExceptionRaised() {

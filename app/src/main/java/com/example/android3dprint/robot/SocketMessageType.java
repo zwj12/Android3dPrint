@@ -184,6 +184,7 @@ public enum SocketMessageType {
                 this.requestDataLength = symbolName.length();
                 this.packSocketHeader(requestDOS);
                 requestDOS.writeBytes(symbolName);
+                Log.d(TAG,symbolName);
                 break;
             case SetNumData:
                 this.requestDataLength = symbolName.length() + 4;

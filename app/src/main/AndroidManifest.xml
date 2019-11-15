@@ -13,8 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Main3Activity"></activity>
-        <activity android:name=".MainActivity2" />
+        <activity
+            android:name=".WeldParameterRecyclerActivity"
+            android:label="@string/title_activity_weld_parameter_recycler"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/NoActionBar" />
         <activity android:name=".WeldParameterV3Activity" />
         <activity
             android:name=".WeldParameterActivity"
