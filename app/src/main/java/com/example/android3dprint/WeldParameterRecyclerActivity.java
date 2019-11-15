@@ -56,7 +56,7 @@ public class WeldParameterRecyclerActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
 
         viewModel = ViewModelProviders.of(this).get(WeldParameterListViewModel.class);
-        adapter = new WeldParameterAdapter(this.viewModel.getSeamDataList().getValue(),
+        adapter = new WeldParameterAdapter(this,this.viewModel.getSeamDataList().getValue(),
                 this.viewModel.getWeldDataList().getValue(), this.viewModel.getWeaveDataList().getValue());
         recyclerView.setAdapter(adapter);
 
@@ -68,7 +68,10 @@ public class WeldParameterRecyclerActivity extends AppCompatActivity
 
     @Override
     public void refreshUI(SocketMessageData[] socketMessageDatas) {
-        adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
+        viewModel.setSeamDataList(viewModel.getSeamDataList().getValue());
+        viewModel.setWeldDataList(viewModel.getWeldDataList().getValue());
+        viewModel.setWeaveDataList(viewModel.getWeaveDataList().getValue());
         Log.d(TAG,"refreshUI");
     }
 

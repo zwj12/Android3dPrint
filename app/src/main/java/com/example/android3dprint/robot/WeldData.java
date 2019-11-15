@@ -1,12 +1,16 @@
 package com.example.android3dprint.robot;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Locale;
 
-public class WeldData implements Serializable {
+public class WeldData extends BaseObservable
+        implements Serializable {
     private final  String strTaskName = "T_ROB1";
     private final  String strDataModuleName = "JQR365WeldDataModule";
     private final  String strDataName = "weld";
@@ -46,12 +50,14 @@ public class WeldData implements Serializable {
         this.index = index;
     }
 
+    @Bindable
     public double getWeldSpeed() {
         return weldSpeed;
     }
 
     public void setWeldSpeed(double weldSpeed) {
         this.weldSpeed = weldSpeed;
+        notifyPropertyChanged(BR.weldSpeed);
     }
 
     public double getOrgWeldSpeed() {
@@ -106,7 +112,8 @@ public class WeldData implements Serializable {
 
         numStartIndex = numStopIndex + 1;
         numStopIndex = strWeldData.indexOf(",", numStartIndex);
-        this.weldSpeed = Float.parseFloat(strWeldData.substring(numStartIndex, numStopIndex));
+//        this.weldSpeed = Float.parseFloat(strWeldData.substring(numStartIndex, numStopIndex));
+        this.setWeldSpeed(Float.parseFloat(strWeldData.substring(numStartIndex, numStopIndex)));
 
         numStartIndex = numStopIndex + 1;
         numStopIndex = strWeldData.indexOf(",", numStartIndex);

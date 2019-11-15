@@ -30,7 +30,7 @@
             android:id="@+id/textView_weldData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{weldData.toString()}" />
+            android:text="@{String.valueOf( weldData.weldSpeed)}" />
 
         <TextView
             android:id="@+id/textView_weaveData"
