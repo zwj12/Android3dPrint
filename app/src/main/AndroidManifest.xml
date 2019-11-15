@@ -16,21 +16,8 @@
         <activity
             android:name=".WeldParameterRecyclerActivity"
             android:label="@string/title_activity_weld_parameter_recycler"
-            android:theme="@style/NoActionBar"></activity>
-        <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
             android:theme="@style/NoActionBar" />
         <activity android:name=".WeldParameterV3Activity" />
-        <activity
-            android:name=".WeldParameterActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".WeldParameterV2Activity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".SocketActivity"
-            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textView_seamData"
+    <data>
+        <variable
+            name="seamData"
+            type="com.example.android3dprint.robot.SeamData" />
+        <variable
+            name="weldData"
+            type="com.example.android3dprint.robot.WeldData" />
+        <variable
+            name="weaveData"
+            type="com.example.android3dprint.robot.WeaveData" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView_weldData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        <TextView
+            android:id="@+id/textView_seamData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{seamData.toString()}"/>
 
-    <TextView
-        android:id="@+id/textView_weaveData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/textView_weldData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{weldData.toString()}" />
+
+        <TextView
+            android:id="@+id/textView_weaveData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{weaveData.toString()}" />
+    </LinearLayout>
+
+</layout>

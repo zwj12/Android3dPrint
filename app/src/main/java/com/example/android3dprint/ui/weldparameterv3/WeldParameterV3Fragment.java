@@ -28,6 +28,7 @@ import com.example.android3dprint.R;
 import com.example.android3dprint.databinding.WeldParameterV3FragmentBinding;
 import com.example.android3dprint.robot.SeamData;
 import com.example.android3dprint.robot.SocketAsyncTask;
+import com.example.android3dprint.robot.SocketMessageData;
 import com.example.android3dprint.robot.SocketMessageType;
 import com.example.android3dprint.robot.WeaveData;
 import com.example.android3dprint.robot.WeldData;
@@ -95,24 +96,24 @@ public class WeldParameterV3Fragment extends Fragment
 
         int i;
         socketAsyncTask = new SocketAsyncTask(viewModel.HOST, viewModel.PORT, this);
-        SocketMessageType[] socketMessageTypes = new SocketMessageType[4];
+        SocketMessageData[] socketMessageDatas = new SocketMessageData[4];
         i = -1;
 
-        socketMessageTypes[++i] = SocketMessageType.GetSeamData;
-        socketMessageTypes[i].setSymbolName(String.format("seam%02d", index));
-        socketMessageTypes[i].setSymbolValue(viewModel.getSeamData().getValue());
+        socketMessageDatas[++i] =new SocketMessageData(SocketMessageType.GetSeamData);
+        socketMessageDatas[i].setSymbolName(String.format("seam%02d", index));
+        socketMessageDatas[i].setSymbolValue(viewModel.getSeamData().getValue());
 
-        socketMessageTypes[++i] = SocketMessageType.GetWeldData;
-        socketMessageTypes[i].setSymbolName(String.format("weld%02d", index));
-        socketMessageTypes[i].setSymbolValue(viewModel.getWeldData().getValue());
+        socketMessageDatas[++i] =new SocketMessageData( SocketMessageType.GetWeldData);
+        socketMessageDatas[i].setSymbolName(String.format("weld%02d", index));
+        socketMessageDatas[i].setSymbolValue(viewModel.getWeldData().getValue());
 
-        socketMessageTypes[++i] = SocketMessageType.GetWeaveData;
-        socketMessageTypes[i].setSymbolName(String.format("weave%02d", index));
-        socketMessageTypes[i].setSymbolValue(viewModel.getWeaveData().getValue());
+        socketMessageDatas[++i] =new SocketMessageData( SocketMessageType.GetWeaveData);
+        socketMessageDatas[i].setSymbolName(String.format("weave%02d", index));
+        socketMessageDatas[i].setSymbolValue(viewModel.getWeaveData().getValue());
 
-        socketMessageTypes[++i] = SocketMessageType.CloseConnection;
+        socketMessageDatas[++i] = new SocketMessageData(SocketMessageType.CloseConnection);
 
-        socketAsyncTask.execute(socketMessageTypes);
+        socketAsyncTask.execute(socketMessageDatas);
         Log.d(TAG, "index:" + position + "," + id);
 
     }
@@ -123,7 +124,7 @@ public class WeldParameterV3Fragment extends Fragment
     }
 
     @Override
-    public void refreshUI(SocketMessageType[] socketMessageTypes) {
+    public void refreshUI(SocketMessageData[] socketMessageDatas) {
         Log.d(TAG, "refreshUI");
         if (socketAsyncTask.isIoExceptionRaised()) {
             Toast toast = Toast.makeText(getActivity(), "The connetion may be closed, please check it!", Toast.LENGTH_LONG);

@@ -6,14 +6,18 @@ import android.os.Bundle;
 import com.example.android3dprint.adapter.WeldParameterAdapter;
 import com.example.android3dprint.robot.SeamData;
 import com.example.android3dprint.robot.SocketAsyncTask;
+import com.example.android3dprint.robot.SocketMessageData;
 import com.example.android3dprint.robot.SocketMessageType;
 import com.example.android3dprint.robot.WeaveData;
 import com.example.android3dprint.robot.WeldData;
+import com.example.android3dprint.ui.weldparameterv3.WeldParameterV3ViewModel;
+import com.example.android3dprint.viewmodel.WeldParameterListViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,9 +31,7 @@ public class WeldParameterRecyclerActivity extends AppCompatActivity
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private SocketAsyncTask socketAsyncTask;
-    private SeamData[] seamDataList = new SeamData[32];
-    private WeldData[] weldDataList = new WeldData[32];
-    private WeaveData[] weaveDataList = new WeaveData[32];
+    private WeldParameterListViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +55,20 @@ public class WeldParameterRecyclerActivity extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        for (int index = 0; index < 32; index++) {
-            seamDataList[index]=new SeamData();
-            weldDataList[index]=new WeldData();
-            weaveDataList[index]=new WeaveData();
-        }
-        adapter = new WeldParameterAdapter(seamDataList, weldDataList, weaveDataList);
+        viewModel = ViewModelProviders.of(this).get(WeldParameterListViewModel.class);
+        adapter = new WeldParameterAdapter(this.viewModel.getSeamDataList().getValue(),
+                this.viewModel.getWeldDataList().getValue(), this.viewModel.getWeaveDataList().getValue());
         recyclerView.setAdapter(adapter);
 
-        LoadWeldParameters();
+        if(!this.viewModel.isViewModelInitialized()){
+            LoadWeldParameters();
+            this.viewModel.setViewModelInitialized(true);
+        }
     }
 
     @Override
-    public void refreshUI(SocketMessageType[] socketMessageTypes) {
+    public void refreshUI(SocketMessageData[] socketMessageDatas) {
+        adapter.notifyDataSetChanged();
         Log.d(TAG,"refreshUI");
     }
 
@@ -73,25 +76,26 @@ public class WeldParameterRecyclerActivity extends AppCompatActivity
         String HOST = "10.0.2.2";
         int PORT = 3003;
         socketAsyncTask = new SocketAsyncTask(HOST, PORT, this);
-        SocketMessageType[] socketMessageTypes;
-        socketMessageTypes = new SocketMessageType[32 * 3 + 1];
+        SocketMessageData[] socketMessageDatas;
+        socketMessageDatas = new SocketMessageData[32 * 3 + 1];
 
         int i = -1;
         for (int index = 0; index < 32; index++) {
-            socketMessageTypes[++i] = SocketMessageType.GetSeamData;
-            socketMessageTypes[i].setSymbolName(String.format("seam%02d", index + 1));
-            socketMessageTypes[i].setSymbolValue(seamDataList[index]);
+            socketMessageDatas[++i] =new SocketMessageData(SocketMessageType.GetSeamData);
+            socketMessageDatas[i].setSymbolName(String.format("seam%02d", index + 1));
+            socketMessageDatas[i].setSymbolValue(this.viewModel.getSeamDataList().getValue()[index]);
 
-            socketMessageTypes[++i] = SocketMessageType.GetWeldData;
-            socketMessageTypes[i].setSymbolName(String.format("weld%02d", index + 1));
-            socketMessageTypes[i].setSymbolValue(weldDataList[index]);
-            Log.d(TAG, socketMessageTypes[i].getSymbolName().toString());
+            socketMessageDatas[++i] =new SocketMessageData( SocketMessageType.GetWeldData);
+            socketMessageDatas[i].setSymbolName(String.format("weld%02d", index + 1));
+            socketMessageDatas[i].setSymbolValue(this.viewModel.getWeldDataList().getValue()[index]);
+            Log.d(TAG, socketMessageDatas[i].getSymbolName().toString());
 
-            socketMessageTypes[++i] = SocketMessageType.GetWeaveData;
-            socketMessageTypes[i].setSymbolName(String.format("weave%02d", index + 1));
-            socketMessageTypes[i].setSymbolValue(weaveDataList[index]);
+            socketMessageDatas[++i] =new SocketMessageData( SocketMessageType.GetWeaveData);
+            socketMessageDatas[i].setSymbolName(String.format("weave%02d", index + 1));
+            socketMessageDatas[i].setSymbolValue(this.viewModel.getWeaveDataList().getValue()[index]);
         }
-        socketMessageTypes[++i] = SocketMessageType.CloseConnection;
-        socketAsyncTask.execute(socketMessageTypes);
+
+        socketMessageDatas[++i] =new SocketMessageData( SocketMessageType.CloseConnection);
+        socketAsyncTask.execute(socketMessageDatas);
     }
 }

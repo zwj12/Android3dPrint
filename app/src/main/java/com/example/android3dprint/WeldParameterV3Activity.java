@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android3dprint.robot.SocketAsyncTask;
+import com.example.android3dprint.robot.SocketMessageData;
 import com.example.android3dprint.robot.SocketMessageType;
 import com.example.android3dprint.robot.WeaveData;
 import com.example.android3dprint.robot.WeldData;
@@ -59,7 +60,7 @@ public class WeldParameterV3Activity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int i;
-        SocketMessageType[] socketMessageTypes;
+        SocketMessageData[] socketMessageDatas;
         switch (item.getItemId()) {
             case R.id.action_save:
                 WeldParameterV3Fragment fragment = (WeldParameterV3Fragment) getSupportFragmentManager()
@@ -67,47 +68,47 @@ public class WeldParameterV3Activity extends AppCompatActivity
                 fragment.SaveWeldParameter();
 
                 socketAsyncTask = new SocketAsyncTask(viewModel.HOST, viewModel.PORT, this);
-                socketMessageTypes = new SocketMessageType[4];
+                socketMessageDatas = new SocketMessageData[4];
                 i = -1;
 
-                socketMessageTypes[++i] = SocketMessageType.SetSeamData;
-                socketMessageTypes[i].setSymbolName(String.format("seam%02d", viewModel.getIndex().getValue()));
-                socketMessageTypes[i].setSymbolValue(viewModel.getSeamData().getValue());
+                socketMessageDatas[++i] =new SocketMessageData(SocketMessageType.SetSeamData);
+                socketMessageDatas[i].setSymbolName(String.format("seam%02d", viewModel.getIndex().getValue()));
+                socketMessageDatas[i].setSymbolValue(viewModel.getSeamData().getValue());
 
-                socketMessageTypes[++i] = SocketMessageType.SetWeldData;
-                socketMessageTypes[i].setSymbolName(String.format("weld%02d", viewModel.getIndex().getValue()));
-                socketMessageTypes[i].setSymbolValue(viewModel.getWeldData().getValue());
+                socketMessageDatas[++i] = new SocketMessageData(SocketMessageType.SetWeldData);
+                socketMessageDatas[i].setSymbolName(String.format("weld%02d", viewModel.getIndex().getValue()));
+                socketMessageDatas[i].setSymbolValue(viewModel.getWeldData().getValue());
 
-                socketMessageTypes[++i] = SocketMessageType.SetWeaveData;
-                socketMessageTypes[i].setSymbolName(String.format("weave%02d", viewModel.getIndex().getValue()));
-                socketMessageTypes[i].setSymbolValue(viewModel.getWeaveData().getValue());
+                socketMessageDatas[++i] =new SocketMessageData( SocketMessageType.SetWeaveData);
+                socketMessageDatas[i].setSymbolName(String.format("weave%02d", viewModel.getIndex().getValue()));
+                socketMessageDatas[i].setSymbolValue(viewModel.getWeaveData().getValue());
 
-                socketMessageTypes[++i] = SocketMessageType.CloseConnection;
+                socketMessageDatas[++i] = new SocketMessageData(SocketMessageType.CloseConnection);
 
-                socketAsyncTask.execute(socketMessageTypes);
+                socketAsyncTask.execute(socketMessageDatas);
                 Log.d(TAG, "action_save");
                 return true;
             case R.id.action_refresh:
 
                 socketAsyncTask = new SocketAsyncTask(viewModel.HOST, viewModel.PORT, this);
-                socketMessageTypes = new SocketMessageType[4];
+                socketMessageDatas = new SocketMessageData[4];
                 i = -1;
 
-                socketMessageTypes[++i] = SocketMessageType.GetSeamData;
-                socketMessageTypes[i].setSymbolName(String.format("seam%02d", viewModel.getIndex().getValue()));
-                socketMessageTypes[i].setSymbolValue(viewModel.getSeamData().getValue());
+                socketMessageDatas[++i] =new SocketMessageData( SocketMessageType.GetSeamData);
+                socketMessageDatas[i].setSymbolName(String.format("seam%02d", viewModel.getIndex().getValue()));
+                socketMessageDatas[i].setSymbolValue(viewModel.getSeamData().getValue());
 
-                socketMessageTypes[++i] = SocketMessageType.GetWeldData;
-                socketMessageTypes[i].setSymbolName(String.format("weld%02d", viewModel.getIndex().getValue()));
-                socketMessageTypes[i].setSymbolValue(viewModel.getWeldData().getValue());
+                socketMessageDatas[++i] =new SocketMessageData( SocketMessageType.GetWeldData);
+                socketMessageDatas[i].setSymbolName(String.format("weld%02d", viewModel.getIndex().getValue()));
+                socketMessageDatas[i].setSymbolValue(viewModel.getWeldData().getValue());
 
-                socketMessageTypes[++i] = SocketMessageType.GetWeaveData;
-                socketMessageTypes[i].setSymbolName(String.format("weave%02d", viewModel.getIndex().getValue()));
-                socketMessageTypes[i].setSymbolValue(viewModel.getWeaveData().getValue());
+                socketMessageDatas[++i] =new SocketMessageData( SocketMessageType.GetWeaveData);
+                socketMessageDatas[i].setSymbolName(String.format("weave%02d", viewModel.getIndex().getValue()));
+                socketMessageDatas[i].setSymbolValue(viewModel.getWeaveData().getValue());
 
-                socketMessageTypes[++i] = SocketMessageType.CloseConnection;
+                socketMessageDatas[++i] =new SocketMessageData( SocketMessageType.CloseConnection);
 
-                socketAsyncTask.execute(socketMessageTypes);
+                socketAsyncTask.execute(socketMessageDatas);
                 Log.d(TAG, "action_refresh");
                 return true;
 
@@ -128,9 +129,9 @@ public class WeldParameterV3Activity extends AppCompatActivity
     }
 
     @Override
-    public void refreshUI(SocketMessageType[] socketMessageTypes) {
+    public void refreshUI(SocketMessageData[] socketMessageDatas) {
         WeldParameterV3Fragment fragment = (WeldParameterV3Fragment) getSupportFragmentManager()
                 .findFragmentByTag("WeldParameterV3Fragment");
-        fragment.refreshUI(socketMessageTypes);
+        fragment.refreshUI(socketMessageDatas);
     }
 }

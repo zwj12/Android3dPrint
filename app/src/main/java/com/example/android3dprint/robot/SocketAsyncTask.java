@@ -20,7 +20,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, SocketMessageType[]> {
+public class SocketAsyncTask extends AsyncTask<SocketMessageData, Integer, SocketMessageData[]> {
     private static final String TAG = "SocketAsyncTask";
     private static final int connectTimeOut = 2000;
     private static final int soTimeOut = 2000;
@@ -53,19 +53,19 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
     }
 
     @Override
-    protected SocketMessageType[] doInBackground(SocketMessageType... socketMessageTypes) {
+    protected SocketMessageData[] doInBackground(SocketMessageData... socketMessageDatas) {
         Log.d(TAG, "doInBackground");
         try {
             connectToRobot();
             byte[] receiveBytes = new byte[1024];
-            for (int i = 0; i < socketMessageTypes.length; i++) {
-                dataOutputStream.write(socketMessageTypes[i].getRequestRawBytes());
+            for (int i = 0; i < socketMessageDatas.length; i++) {
+                dataOutputStream.write(socketMessageDatas[i].getRequestRawBytes());
                 dataOutputStream.flush();
                 dataInputStream.read(receiveBytes, 0, 3);
                 dataInputStream.read(receiveBytes, 3, (receiveBytes[1] << 8) + receiveBytes[2]);
-                socketMessageTypes[i].unpackResponseRawBytes(receiveBytes);
-                publishProgress(i * 100 / socketMessageTypes.length);
-                if(socketMessageTypes[i]==SocketMessageType.CloseConnection){
+                socketMessageDatas[i].unpackResponseRawBytes(receiveBytes);
+                publishProgress(i * 100 / socketMessageDatas.length);
+                if(socketMessageDatas[i].getSocketMessageType()==SocketMessageType.CloseConnection){
                     socket.close();
                     socket=null;
                     break;
@@ -78,7 +78,7 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
             Log.e(TAG, e.getMessage());
         }
         Log.d(TAG, String.format("doInBackground in SocketAsyncTask thread"));
-        return socketMessageTypes;
+        return socketMessageDatas;
     }
 
     @Override
@@ -88,14 +88,14 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
     }
 
     @Override
-    protected void onPostExecute(SocketMessageType[] socketMessageTypes) {
-        super.onPostExecute(socketMessageTypes);
-        for (SocketMessageType socketMessageType : socketMessageTypes) {
-            if(socketMessageType!=null){
-                Log.d(TAG, String.format("onPostExecute in UI thread, %s", socketMessageType.responseValue));
+    protected void onPostExecute(SocketMessageData[] socketMessageDatas) {
+        super.onPostExecute(socketMessageDatas);
+        for (SocketMessageData socketMessageData : socketMessageDatas) {
+            if(socketMessageDatas!=null){
+                Log.d(TAG, String.format("onPostExecute in UI thread, %s", socketMessageData.responseValue));
             }
         }
-        this.socketListener.refreshUI(socketMessageTypes);
+        this.socketListener.refreshUI(socketMessageDatas);
     }
 
     private void connectToRobot() throws IOException {
@@ -119,7 +119,7 @@ public class SocketAsyncTask extends AsyncTask<SocketMessageType, Integer, Socke
     }
 
     public interface OnSocketListener {
-        void refreshUI(SocketMessageType[] socketMessageTypes);
+        void refreshUI(SocketMessageData[] socketMessageDatas);
     }
 
 }

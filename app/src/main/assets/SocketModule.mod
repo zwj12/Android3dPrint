@@ -20,7 +20,7 @@ MODULE SocketModule
     VAR num numMessageFormatError:=0;
 
     PROC main()
-        SetTPHandlerLogLevel\DEBUG;
+        SetTPHandlerLogLevel\WARNING;
         SetFileHandlerLogLevel\DEBUG;
         IF RobOS()=FALSE THEN
             strIPAddressServer:="127.0.0.1";
@@ -430,7 +430,8 @@ MODULE SocketModule
         PackRawBytes ValToStr(symbolValue),raw_data_out\Network,1\ASCII;
         PackSocketHeader commandOut;
         SocketSend socketClient\RawData:=raw_data_out;
-
+        Logging\DEBUG,\LoggerName:="SocketModule",stringHeader{commandIn+1}+" : "+strSymbolName+" : "+ValToStr(symbolValue);
+        
     ERROR
         IF ERRNO=ERR_SYM_ACCESS OR ERRNO=ERR_INVDIM OR ERRNO=ERR_SYMBOL_TYPE OR ERRNO=ERR_TASKNAME THEN
             Logging\ERRORING,\LoggerName:="SocketModule","Symbol ("+strSymbolName+") of WeldData is not exist";
@@ -535,7 +536,7 @@ MODULE SocketModule
         UnpackRawBytes raw_data_in\Network,4,strSymbolName\ASCII:=numCurIndex-4;
 
         ![0,1.5,[0,0,0,0,0,0,0,0,0],0,0,0,0,0,[0,0,0,0,0,0,0,0,0],0,0,[0,0,0,0,0,0,0,0,0],0,0,[0,0,0,0,0,0,0,0,0],0]
-        numCurIndex:=numCurIndex+2;  
+        numCurIndex:=numCurIndex+2;
         Logging\DEBUG,\LoggerName:="SocketModule","numCurIndex="+ValToStr(numCurIndex);
         strSymbolValue:=GetStringofSymbolValue(numCurIndex,strCommaCharacter);
         boolConversionSucceeded:=StrToVal(strSymbolValue,symbolValue.purge_time);
@@ -618,8 +619,8 @@ MODULE SocketModule
             UnpackRawBytes raw_data_in\Network,numStartIndex,strSymbolValue\ASCII:=numCurIndex-numStartIndex;
         ENDIF
         numStartIndex:=numCurIndex+1;
-!        Logging\DEBUG,\LoggerName:="SocketModule","numCurIndex="+ValToStr(numCurIndex);
-!        Logging\DEBUG,\LoggerName:="SocketModule",strSymbolValue;
+        !        Logging\DEBUG,\LoggerName:="SocketModule","numCurIndex="+ValToStr(numCurIndex);
+        !        Logging\DEBUG,\LoggerName:="SocketModule",strSymbolValue;
         RETURN strSymbolValue;
     ENDFUNC
 
