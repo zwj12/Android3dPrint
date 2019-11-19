@@ -86,7 +86,7 @@ public class WeldParameterRecyclerActivity extends AppCompatActivity
                 new IndexItemKeyProvider<>(1, this.viewModel.getIndexList()),
                 new IndexItemDetailsLookup(recyclerView),
                 StorageStrategy.createLongStorage())
-                .withSelectionPredicate(SelectionPredicates.<Long>createSelectAnything())
+                .withSelectionPredicate(SelectionPredicates.createSelectSingleAnything())
                 .build();
 
         adapter.setSelectionTracker(selectionTracker);

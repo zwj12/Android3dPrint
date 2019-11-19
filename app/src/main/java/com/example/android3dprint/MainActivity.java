@@ -6,6 +6,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.room.Room;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -27,7 +30,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
-        implements SocketAsyncTask.OnSocketListener{
+        implements SocketAsyncTask.OnSocketListener {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private static String HOST = "10.0.2.2";
     private static int PORT = 3003;
@@ -54,19 +57,56 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void checkMessage(View view){
+    public void checkMessage(View view) {
         EditText editText = (EditText) findViewById(R.id.editTextInput);
-        WeldData weldData=new WeldData();
+        WeldData weldData = new WeldData();
         weldData.parse(editText.getText().toString());
         editText = (EditText) findViewById(R.id.editTextOutput);
         editText.setText(weldData.toString());
     }
 
-    public void socketTest(View view){
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE `Fruit` (`id` INTEGER, "
+                    + "`name` TEXT, PRIMARY KEY(`id`))");
+        }
+    };
 
+    static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE Book "
+                    + " ADD COLUMN pub_year INTEGER");
+        }
+    };
+
+    public void socketTest(View view) {
+//        MyDBOpenHelper myDBHelper = new MyDBOpenHelper(MainActivity.this, "my.db", null, 1);
+//        myDBHelper.getWritableDatabase();
+
+//        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+//                AppDatabase.class, "test1.db").addMigrations(MIGRATION_1_2).build();
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "test1.db").allowMainThreadQueries().build();
+        UserDao userDao = db.getUserDao();
+
+        User user = new User();
+        user.uid=1;
+        user.firstName="Michael";
+        user.lastName="Zhu";
+        userDao.insertAll(user);
+        db.close();
+//        for (int index = 3; index < 10003; index++) {
+//            User user=new User();
+//            user.uid=index;
+//            user.firstName="Michael";
+//            user.lastName="Zhu";
+//            userDao.insertAll(user);
+//        }
     }
 
-    public void AsyncTask(View v)throws IOException {
+    public void AsyncTask(View v) throws IOException {
 //        SocketMessageData[] socketMessageData=new SocketMessageData[30];
 //        int i=-1;
 //        socketMessageData[i]=new SocketMessageData(SocketMessageType.GetOperatingMode);
@@ -161,7 +201,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void refreshUI(SocketMessageData[] socketMessageDatas){
+    public void refreshUI(SocketMessageData[] socketMessageDatas) {
 //        EditText editText;
 //        for(SocketMessageType socketMessageType : socketMessageTypes){
 //            if(socketMessageType==null){
