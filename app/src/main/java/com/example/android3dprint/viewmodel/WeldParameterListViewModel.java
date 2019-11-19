@@ -8,9 +8,12 @@ import com.example.android3dprint.robot.SeamData;
 import com.example.android3dprint.robot.WeaveData;
 import com.example.android3dprint.robot.WeldData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author CNMIZHU7
- * @date 11/15/2019
+ * @since 11/15/2019
  * description：
  */
 public class WeldParameterListViewModel extends ViewModel {
@@ -21,6 +24,17 @@ public class WeldParameterListViewModel extends ViewModel {
     private MutableLiveData<SeamData[]> seamDataListMutableLiveData;
     private MutableLiveData<WeldData[]> weldDataListMutableLiveData;
     private MutableLiveData<WeaveData[]> weaveDataListMutableLiveData;
+    private ArrayList<Long> indexList;
+
+    public ArrayList<Long> getIndexList() {
+        if (indexList == null) {
+            indexList = new ArrayList<Long>();
+            for(Long i=0L;i<32;i++){
+                indexList.add(i);
+            }
+        }
+        return indexList;
+    }
 
     public boolean isViewModelInitialized() {
         return viewModelInitialized;
@@ -66,21 +80,21 @@ public class WeldParameterListViewModel extends ViewModel {
         return weaveDataListMutableLiveData;
     }
 
-    public void setSeamDataList(SeamData seamDataList[]) {
+    public void setSeamDataList(SeamData[] seamDataList) {
         if (seamDataListMutableLiveData == null) {
             seamDataListMutableLiveData = new MutableLiveData<SeamData[]>();
         }
         seamDataListMutableLiveData.postValue(seamDataList);
     }
 
-    public void setWeldDataList(WeldData weldDataList[]) {
+    public void setWeldDataList(WeldData[] weldDataList) {
         if (weldDataListMutableLiveData == null) {
             weldDataListMutableLiveData = new MutableLiveData<WeldData[]>();
         }
         weldDataListMutableLiveData.postValue(weldDataList);
     }
 
-    public void setWeaveDataList(WeaveData weaveDataList[]) {
+    public void setWeaveDataList(WeaveData[] weaveDataList) {
         if (weaveDataListMutableLiveData == null) {
             weaveDataListMutableLiveData = new MutableLiveData<WeaveData[]>();
         }
