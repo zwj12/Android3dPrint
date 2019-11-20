@@ -17,6 +17,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.burgstaller.okhttp.AuthenticationCacheInterceptor;
+import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
+import com.burgstaller.okhttp.digest.CachingAuthenticator;
+import com.burgstaller.okhttp.digest.DigestAuthenticator;
 import com.example.android3dprint.robot.ArcData;
 import com.example.android3dprint.robot.SeamData;
 import com.example.android3dprint.robot.SocketAsyncTask;
@@ -28,6 +32,18 @@ import com.example.android3dprint.robot.WeldData;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Credentials;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity
         implements SocketAsyncTask.OnSocketListener {
@@ -53,8 +69,109 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void sendMessage(View view) {
+    public void okHttpTest(View view) {
 
+//        new Thread(){
+//            @Override
+//            public void run() {
+//                try {
+//                    final DigestAuthenticator authenticator = new DigestAuthenticator(new Credentials("username", "pass"));
+//
+//                    final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
+//                    final OkHttpClient client = new OkHttpClient.Builder()
+//                            .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
+//                            .addInterceptor(new AuthenticationCacheInterceptor(authCache))
+//                            .build();
+//
+//                    String url = "http://www.google.com";
+//                    Request request = new Request.Builder()
+//                            .url(url)
+//                            .get()
+//                            .build();
+//                    Response response = client.newCall(request).execute();
+//                }catch (Exception e){
+//                    Log.d(TAG,e.getMessage());
+//                }
+//
+//            }
+//        }.start();
+
+        new Thread() {
+
+            @Override
+            public void run() {
+                Request request = new Request.Builder()
+                        .url("http://10.0.2.2:8610/rw/system")
+                        .build();
+
+                try (Response response = client.newCall(request).execute()) {
+                    if (!response.isSuccessful()) {
+
+                    }
+                    Log.d(TAG,"response code " + response);
+                    Log.d(TAG,"code:" + response.code());
+
+                    Headers responseHeaders = response.headers();
+                    for (int i = 0; i < responseHeaders.size(); i++) {
+                        Log.d(TAG, responseHeaders.name(i) + ": " + responseHeaders.value(i));
+                    }
+
+                    Log.d(TAG, response.body().string());
+                }catch (Exception e){
+                    Log.d(TAG,e.getMessage());
+                }
+            }
+        }.start();
+
+//        asynchronousGetRequests();
+    }
+
+    OkHttpClient client = new OkHttpClient();
+
+    String run(String url) throws IOException {
+        Request request = new Request.Builder().url(url).build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
+
+
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+    String post(String url, String json) throws IOException {
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder().url(url).post(body).build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
+    public void asynchronousGetRequests() {
+        String url = "http://10.0.2.2:8610/rw/system";
+//        String url = "https://www.baidu.com";
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url(url)
+                .get()//默认就是GET请求
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "asynchronousGetRequests onFailure: " + e.getMessage());
+//                runOnUiThread(() -> tvContent.setText("asynchronousGetRequests onFailure: " + e.getMessage()));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = response.body().string();
+                Log.d(TAG, "asynchronousGetRequests onResponse: " + result);
+//                runOnUiThread(() -> tvContent.setText("asynchronousGetRequests onResponse: " + result));
+
+            }
+        });
     }
 
     public void checkMessage(View view) {
@@ -92,9 +209,9 @@ public class MainActivity extends AppCompatActivity
         UserDao userDao = db.getUserDao();
 
         User user = new User();
-        user.uid=1;
-        user.firstName="Michael";
-        user.lastName="Zhu";
+        user.uid = 1;
+        user.firstName = "Michael";
+        user.lastName = "Zhu";
         userDao.insertAll(user);
         db.close();
 //        for (int index = 3; index < 10003; index++) {
