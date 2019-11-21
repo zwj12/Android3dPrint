@@ -33,6 +33,7 @@ import com.example.android3dprint.robot.WeldData;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,6 +45,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity
         implements SocketAsyncTask.OnSocketListener {
@@ -69,13 +71,32 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void retrofitTest() {
+//        final DigestAuthenticator authenticator =
+//                new DigestAuthenticator(new Credentials("Default User", "robotics"));
+//
+//        final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
+//        final OkHttpClient client = new OkHttpClient.Builder()
+//                .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
+//                .addInterceptor(new AuthenticationCacheInterceptor(authCache))
+//                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.github.com/")
+                .build();
+
+        GitHubService service = retrofit.create(GitHubService.class);
+
+        retrofit2.Call<List<User>> repos = service.listRepos("octocat");
+    }
+
     public void okHttpTest(View view) {
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 try {
-                     final DigestAuthenticator authenticator =
-                             new DigestAuthenticator(new Credentials("Default User", "robotics"));
+                    final DigestAuthenticator authenticator =
+                            new DigestAuthenticator(new Credentials("Default User", "robotics"));
 
                     final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
                     final OkHttpClient client = new OkHttpClient.Builder()
@@ -92,8 +113,8 @@ public class MainActivity extends AppCompatActivity
                     if (!response.isSuccessful()) {
 
                     }
-                    Log.d(TAG,"response code " + response);
-                    Log.d(TAG,"code:" + response.code());
+                    Log.d(TAG, "response code " + response);
+                    Log.d(TAG, "code:" + response.code());
 
                     Headers responseHeaders = response.headers();
                     for (int i = 0; i < responseHeaders.size(); i++) {
@@ -101,8 +122,8 @@ public class MainActivity extends AppCompatActivity
                     }
 
                     Log.d(TAG, response.body().string());
-                }catch (Exception e){
-                    Log.d(TAG,e.getMessage());
+                } catch (Exception e) {
+                    Log.d(TAG, e.getMessage());
                 }
 
             }
