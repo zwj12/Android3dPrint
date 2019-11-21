@@ -20,6 +20,7 @@ import android.widget.EditText;
 import com.burgstaller.okhttp.AuthenticationCacheInterceptor;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
+import com.burgstaller.okhttp.digest.Credentials;
 import com.burgstaller.okhttp.digest.DigestAuthenticator;
 import com.example.android3dprint.robot.ArcData;
 import com.example.android3dprint.robot.SeamData;
@@ -37,7 +38,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Credentials;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -70,41 +70,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void okHttpTest(View view) {
-
-//        new Thread(){
-//            @Override
-//            public void run() {
-//                try {
-//                    final DigestAuthenticator authenticator = new DigestAuthenticator(new Credentials("username", "pass"));
-//
-//                    final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
-//                    final OkHttpClient client = new OkHttpClient.Builder()
-//                            .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
-//                            .addInterceptor(new AuthenticationCacheInterceptor(authCache))
-//                            .build();
-//
-//                    String url = "http://www.google.com";
-//                    Request request = new Request.Builder()
-//                            .url(url)
-//                            .get()
-//                            .build();
-//                    Response response = client.newCall(request).execute();
-//                }catch (Exception e){
-//                    Log.d(TAG,e.getMessage());
-//                }
-//
-//            }
-//        }.start();
-
-        new Thread() {
-
+        new Thread(){
             @Override
             public void run() {
-                Request request = new Request.Builder()
-                        .url("http://10.0.2.2:8610/rw/system")
-                        .build();
+                try {
+                     final DigestAuthenticator authenticator =
+                             new DigestAuthenticator(new Credentials("Default User", "robotics"));
 
-                try (Response response = client.newCall(request).execute()) {
+                    final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
+                    final OkHttpClient client = new OkHttpClient.Builder()
+                            .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
+                            .addInterceptor(new AuthenticationCacheInterceptor(authCache))
+                            .build();
+
+                    String url = "http://10.0.2.2:8610/rw/system";
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .get()
+                            .build();
+                    Response response = client.newCall(request).execute();
                     if (!response.isSuccessful()) {
 
                     }
@@ -120,8 +104,36 @@ public class MainActivity extends AppCompatActivity
                 }catch (Exception e){
                     Log.d(TAG,e.getMessage());
                 }
+
             }
         }.start();
+
+//        new Thread() {
+//
+//            @Override
+//            public void run() {
+//                Request request = new Request.Builder()
+//                        .url("http://10.0.2.2:8610/rw/system")
+//                        .build();
+//
+//                try (Response response = client.newCall(request).execute()) {
+//                    if (!response.isSuccessful()) {
+//
+//                    }
+//                    Log.d(TAG,"response code " + response);
+//                    Log.d(TAG,"code:" + response.code());
+//
+//                    Headers responseHeaders = response.headers();
+//                    for (int i = 0; i < responseHeaders.size(); i++) {
+//                        Log.d(TAG, responseHeaders.name(i) + ": " + responseHeaders.value(i));
+//                    }
+//
+//                    Log.d(TAG, response.body().string());
+//                }catch (Exception e){
+//                    Log.d(TAG,e.getMessage());
+//                }
+//            }
+//        }.start();
 
 //        asynchronousGetRequests();
     }
