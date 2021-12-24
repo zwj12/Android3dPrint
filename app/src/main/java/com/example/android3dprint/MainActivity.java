@@ -50,7 +50,8 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity
         implements SocketAsyncTask.OnSocketListener {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
-    private static String HOST = "10.0.2.2";
+//    private static String HOST = "10.0.2.2";
+    private static String HOST = "192.168.2.52";
     private static int PORT = 3003;
     private static final String TAG = "MainActivity";
     private MutableLiveData<Integer> mNumberLiveData;

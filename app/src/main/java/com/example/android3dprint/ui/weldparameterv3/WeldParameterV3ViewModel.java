@@ -15,7 +15,8 @@ import com.example.android3dprint.robot.WeldData;
 public class WeldParameterV3ViewModel extends ViewModel {
     private static final String TAG = "WeldParameterV3ViewModel";
 
-    public String HOST = "10.0.2.2";
+//    public String HOST = "10.0.2.2";
+    public String HOST = "192.168.2.52";
     public int PORT = 3003;
 
     private MutableLiveData<Integer> indexMutableLiveData;

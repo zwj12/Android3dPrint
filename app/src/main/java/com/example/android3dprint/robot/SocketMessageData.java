@@ -1,5 +1,11 @@
 package com.example.android3dprint.robot;
 
+/**
+ * @author Michael
+ * @date 11/15/2019
+ * description：
+ */
+
 import android.util.Log;
 
 import java.io.ByteArrayInputStream;
@@ -8,11 +14,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-/**
- * @author Michael
- * @date 11/15/2019
- * description：
- */
 public class SocketMessageData {
     private static final String TAG = "SocketMessageData";
     private SocketMessageType socketMessageType;

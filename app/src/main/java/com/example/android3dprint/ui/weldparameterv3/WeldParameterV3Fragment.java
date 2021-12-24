@@ -127,10 +127,10 @@ public class WeldParameterV3Fragment extends Fragment
     public void refreshUI(SocketMessageData[] socketMessageDatas) {
         Log.d(TAG, "refreshUI");
         if (socketAsyncTask.isIoExceptionRaised()) {
-            Toast toast = Toast.makeText(getActivity(), "The connetion may be closed, please check it!", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getActivity(), "The connetion may be closed, please check it!" + viewModel.HOST, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
             TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-            v.setTextColor(Color.YELLOW);
+            v.setTextColor(Color.RED);
             toast.show();
         } else {
             viewModel.setSeamData(viewModel.getSeamData().getValue());
